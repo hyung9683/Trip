@@ -11,8 +11,10 @@ import MainPage from './view/main'
 import Login from './view/login.vue'
 import Join from './view/join.vue'
 import Find from './view/find.vue'
+import MyPage from './view/mypage.vue'
 
 import Trip from './view/trip.vue';
+import Fes from './view/festival.vue';
 
 import qnaMain from './view/qnaMain.vue'
 import qnaWrite from './view/qnaWrite.vue'
@@ -28,37 +30,50 @@ const routes = [
                 path: '/',
                 component: MainPage,
             },
-        {
-            path: '/login',
-            component: Login,
-        }
-        ,
-        {
-            path: '/join',
-            component: Join,
-        },
-        {
-            path: '/find',
-            component: Find,
-        },
-        {
-            path:'/trip/:name/:id',
-            component: Trip
-        },
-        {
-            path: '/qnamain',
-            component: qnaMain,
-        },
-        {
-            path: '/qnawrite',
-            component: qnaWrite,
-        },
-        {
-            path: '/qnamain/qnacontent',
-            component:qnaContent,
-        },
+            {
+                path: '/login',
+                component: Login,
+            }
+            ,
+            {
+                path: '/join',
+                component: Join,
+            },
+            {
+                path: '/find',
+                component: Find,
+            },
+            {
+                path:'/trip/:name/:id',
+                component: Trip
+            },
+            {
+                path: '/qnamain',
+                component: qnaMain,
+            },
+            {
+                path: '/qnawrite',
+                component: qnaWrite,
+            },
+            {
+                path: '/qnamain/qnacontent',
+                component:qnaContent,
+            },
+            {
+                path: '/fes/:name/:id',
+                component:Fes,
+            }
        
-    ]}]
+    ]},
+    {
+    
+    path: '/mypage/:id',
+    name: 'mypage',
+    component: MyPage   
+
+    }
+    
+]
 
 
 window.Kakao.init('79eb0be4a08b223b4a5553fe99835470');

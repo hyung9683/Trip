@@ -45,6 +45,7 @@ body::-webkit-scrollbar {
 
 Footer {
   width: 100%;
+  top:200px;
   height: auto;
   position : relative;
   transform : translateY(-1%);

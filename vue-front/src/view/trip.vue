@@ -55,11 +55,7 @@ export default {
   mounted() {
     this.drawMap();
     this.loadTripList();
-    this.getTripList(this.$route.params.id=1);
-    // this.$nextTick(() => {
-    //   this.checkScroll();
-    //   window.addEventListener('resize', this.checkScroll);
-    // })
+    this.getTripList(this.$route.params.id);
   },
   computed: {
     regionname() {
@@ -84,7 +80,6 @@ export default {
 
       const path = d3.geoPath().projection(projection);
       
-      // const zoom = d3.behavior.zoom()
 
       svg.append('g')
         .selectAll('path')
@@ -155,15 +150,6 @@ export default {
         .attr('font-size', '15px')
         .attr('fill', 'black')
         .text(d => d.properties.name);
-
-        // const zoom = d3.zoom() // 줌 기능
-        // .scaleExtent([1, 8])
-        // .on('zoom', (event) => {
-        // svg.append('g')  
-        // .attr('transform', event.transform);
-        // });
-
-        // svg.call(zoom);
     },
     goToDetail(tripno){
       window.location.href = `http://localhost:8080/tripDetail/${tripno}`;
@@ -171,16 +157,8 @@ export default {
     async getTripList(regionid){
         const response = await axios.get(`http://localhost:3000/triplist/regions/${regionid}`);
         this.rowList = response.data;
-        // this.$nextTick(this.checkScroll);
+        this.$nextTick(this.checkscroll);
     },
-    // checkScroll() {
-    //   const container = this.$refs.rowContainer;
-    //   if (container && container.scrollHeight > container.clientHeight) {
-    //     container.style.overflowY = 'auto';
-    //   } else if(container) {
-    //     container.style.overflowY = 'hidden';
-    //   }
-    // },
     async loadTripList() {
       const {regionid} = this.$route.params;
       if(regionid == 1) {
@@ -207,15 +185,13 @@ body {
   height: 330px;
   display: flex;
   box-sizing: border-box;
-  padding: 20px;
-  
+  scale: 120%;
+  padding: 0 14%;
 }
 
 .card-text {
-  /* margin: 50px;
-  margin-top: 50px;
-  min-height: 5px; */
   text-align: center;
+  scale: 120%;
 }
 
 .card-body {
@@ -259,9 +235,14 @@ a:not(:hover) img {
   left: 50px;
 }
 .region {
-  position: fixed;
+  /* position: fixed;
   top: 190px;
   left: 700px;
+  border: none;
+  font-family: 'Courier New', Courier, monospace; */
+  position: relative;
+  top: 40px;
+  left: 670px;
   border: none;
   font-family: 'Courier New', Courier, monospace;
   
@@ -275,7 +256,7 @@ a:not(:hover) img {
   width: 100%;
   overflow: hidden;
   /* padding: auto; */
-  border-radius: 1%;
+  border-radius: 5%;
   background-color: #eeeeee;
   display: flex;
   align-items: center;
@@ -288,8 +269,10 @@ a:not(:hover) img {
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
   max-height: calc(100vh - 300px);
+  min-height: 700px;
   overflow-y: auto;
-  margin-top: 90px;
+  margin-top: 120px;
   padding-left: 580px;
+  overflow-x: hidden;
 }
 </style>

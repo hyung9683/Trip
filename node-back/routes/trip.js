@@ -18,24 +18,18 @@ router.get('/regions/:regionid', function (req, res) { // 지역별 여행지 �
     });
 });
 
-// router.get('/fslist/:regionname/:regionid', function (req, res) { // 지역별 축제 리스트
-//     const regionname = req.params.regionname
-//     const regionid = req.params.regionid
-//     db.query(sql.fs_list, [regionid], (err, results, fields) => {
-//         if (err) {
-//             console.error(err);
-//             return res.status(500).json({err: '에러'});
-//         }
-//         res.json(results);
-//     });
-// });
+router.get('/regions/api/:regionid', function(req, res) {
+    const regionid = req.params.regionid
+    db.query(sql.fs_list, [regionid], (err, results, fields) => {
+        if(err) {
+            console.error(err);
+            return res.status(500).json({ err: '에러' });
+        }
+        res.json(results);
+    });
+});
 
-// router.get('/tripDetail/:tripNo', function (req, res, next) {
-//     const tripNo = req.params.tripNo;
 
-//     db.query(sql.tv_check, )
-    
-// })
 
 
 

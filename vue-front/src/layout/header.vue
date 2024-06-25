@@ -90,46 +90,49 @@ export default {
      goToTrip() {
             window.location.href = `http://localhost:8080/trip/서울특별시/1`;
         },
-    searchKeyword(keyword) {
-      if (this.keyword) {
-        window.location.href = 'http://localhost:8080/search?keyword=' + keyword;
-      }
-    },
-   
-    goToQna() {
-      window.location.href = `http://localhost:8080/qnamain?page=1`;
-    },
-  
+      goToFes() {
+        window.location.href = "http://localhost:8080/fes/서울특별시/1"
+      },
+      searchKeyword(keyword) {
+        if (this.keyword) {
+          window.location.href = 'http://localhost:8080/search?keyword=' + keyword;
+        }
+      },
     
-    goToLogin() {
-      this.$router.push({ path: '/login' });
-    },
-     goToJoin() {
-       this.$router.push({ path: '/join' });
-     },
-    goToAdmin() {
-      this.$router.push({ path: '/admin/list' });
-    },
-    goToMypage() {
-      this.$router.push({ path: '/mypage' });
-    },
+      goToQna() {
+        window.location.href = `http://localhost:8080/qnamain?page=1`;
+      },
     
-    logout() {
-      this.$store.commit("user", {});
-      this.$swal({
-        position: 'top',
-        icon: 'success',
-        title: '로그아웃되셨습니다.',
-        showConfirmButton: false,
-        timer: 1000
-      })
-        .then(() => {
-          window.location.href = "http://localhost:8080";
+    
+      goToLogin() {
+        this.$router.push({ path: '/login' });
+      },
+      goToJoin() {
+        this.$router.push({ path: '/join' });
+      },
+      goToAdmin() {
+        this.$router.push({ path: '/admin/list' });
+      },
+      goToMypage() {
+        this.$router.push({ path: '/mypage' });
+      },
+      
+      logout() {
+        this.$store.commit("user", {});
+        this.$swal({
+          position: 'top',
+          icon: 'success',
+          title: '로그아웃되셨습니다.',
+          showConfirmButton: false,
+          timer: 1000
         })
-    },
-    goToHome() {
-      window.location.href = "http://localhost:8080";
-    }
+          .then(() => {
+            window.location.href = "http://localhost:8080";
+          })
+      },
+      goToHome() {
+        window.location.href = "http://localhost:8080";
+      }
   }
 }
 

@@ -118,18 +118,18 @@ export default {
                 console.error(error);
             }
         },
-        async loadRegionData() {
-               try { const korea = await axios.get('../assets/korea.json');
-                const features = korea.data.features;
-                const regionData = features.map(feature => ({
-                    id: feature.properties.id,
-                    name: feature.properties.name
-                }));
-                return regionData;
-            } catch(e) {
-                console.error('에러');
-            }
-        },
+        // async loadRegionData() {
+        //        try { const korea = await axios.get('../assets/korea.json');
+        //         const features = korea.data.features;
+        //         const regionData = features.map(feature => ({
+        //             id: feature.properties.id,
+        //             name: feature.properties.name
+        //         }));
+        //         return regionData;
+        //     } catch(e) {
+        //         console.error('에러');
+        //     }
+        // },
         goToDetail(tvno) {
             window.location.href = `http://localhost:8080/tvDetail/${tvno}`;
         },

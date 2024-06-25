@@ -1,1 +1,13 @@
 https://github.com/hyung9683/Trip.git
+
+trip, fes 수정 css
+card 수정
+card-text, body 수정
+trip-list에 overflow-x-hidden 추가
+trip-list에 min-height 추가
+mounted에 getTripList($route.params.id)로 변경
+sql 쿼리문 수정
+
+mypage랑 main.vue는 내일(0625일에)
+
+trip스크립트에 축제 라우터 추가, 기본 서버 주소 통일

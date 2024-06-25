@@ -65,7 +65,7 @@ ORDER BY total_good DESC;
   
    /**추가 지도 리스트 */
    tv_list:`select * from trip_tv_info where tv_id = ?`,
-   fs_list:`select * from trip_fs_info where and fs_id = ?`,
+   fs_list:`select * from trip_fs_info where fs_id = ?`,
 
    //qna
    qnaContent: `SELECT * FROM trip_qna JOIN trip_user 
@@ -81,5 +81,9 @@ ORDER BY total_good DESC;
   qnaCheck: `SELECT user_ty FROM trip_user WHERE user_no =?;`,
   ansWrite: `UPDATE trip_qna  SET qna_ans = ?  WHERE qna_no = ?;`,
   qnacnt: `SELECT COUNT(*) FROM trip_qna;`,
+
+  review_write: `INSERT INTO trip_review (tv_no, user_no, user_id, review_goat, review_content) VALUES (?, ?, ?, ?, ?);`,
+  review_detail: `SELECT tv_tit, tv_ads, tv_content FROM trip_tv_info WHERE tv_no = ?;`,
+  get_review: `SELECT * FROM trip_review WHERE tv_no = ?;`,
   
 }
