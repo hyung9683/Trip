@@ -6,6 +6,7 @@ module.exports = {
   id_check: `SELECT * FROM trip_user WHERE user_id = ?`,
   get_user_no: `SELECT user_no FROM trip_user WHERE user_id = ?`,
   login: `SELECT user_passwd FROM trip_user WHERE user_id = ?`,
+
   //카카오 로그인
   kakaoJoin: `INSERT INTO trip_user (user_id, user_nick, user_email, user_login_ty) VALUES(?,?,?,1)`,
   kakao_check: `SELECT * FROM trip_user WHERE user_id = ?`,
@@ -23,7 +24,7 @@ module.exports = {
    get_img_nm: `SELECT tv_img, tv_sb_img FROM trip_tv_info WHERE tv_no = ?`,
 
 
-
+  //사용자 정보 조회
   user_info: `SELECT user_id, user_nick, user_email, user_num, user_zipcode, user_adr1, user_adr2, user_login_ty
     FROM trip_user
     WHERE user_no = ?`,

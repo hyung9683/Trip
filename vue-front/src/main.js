@@ -7,11 +7,19 @@ import Vuetify from 'vuetify'
 import store from './store'
 
 import defaultLayout from './layout/defaultLayout.vue'
+import MyPageLayout from './layout/mypageLayout'
+
 import MainPage from './view/main'
 import Login from './view/login.vue'
 import Join from './view/join.vue'
 import Find from './view/find.vue'
-import MyPage from './view/mypage.vue'
+
+import MyPage from './mypage/mypage.vue'
+import QnaPage from './mypage/qnapage.vue'
+import ContentPage from './mypage/contentpage.vue'
+import LikePage from './mypage/likepage.vue'
+import ReviewPage from './mypage/reviewpage.vue'
+import MyPageUpdate from './mypage/mypageupdate.vue'
 
 import Trip from './view/trip.vue';
 import Fes from './view/festival.vue';
@@ -64,14 +72,39 @@ const routes = [
                 component:Fes,
             }
        
-    ]},
+    ]
+},
     {
     
-    path: '/mypage/:id',
-    name: 'mypage',
-    component: MyPage   
-
-    }
+    path: '/mypage/',
+    name: 'mypagelayout',
+    component: MyPageLayout,
+    children: [
+        {
+            path: '',
+            component: MyPage,
+        },
+        {
+            path: 'likepage',
+            component: LikePage,
+        },
+        {
+            path: 'reviewpage',
+            component: ReviewPage,
+        },
+        {
+            path: 'contentpage',
+            component: ContentPage,
+        },
+        {
+            path: 'qnapage',
+            component: QnaPage,
+        },
+        {
+            path: 'update',
+            component: MyPageUpdate,
+        }
+    ]}
     
 ]
 

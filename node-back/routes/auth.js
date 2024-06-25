@@ -308,4 +308,16 @@ router.post('/find_pass', function (request, response, next) {
     });
 });
 
+router.post('/mypage/:user_no', function (req, res) {
+    const userno = req.params.user_no;
+    console.log(userno);
+    db.query(sql.user_info, [userno], function(error, results, fields) {
+        if(error) {
+            return res.status(500).json({ error: '없는 사용자입니다'});
+        }
+        console.log(results);
+        return res.json(results);
+    });
+})
+
 module.exports = router;

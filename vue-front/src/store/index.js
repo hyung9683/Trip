@@ -14,6 +14,7 @@ const store = createStore({
     mutations: {
         user(state, data){
             state.user = data;
+            console.log(data);
         }
     },
     plugins: [

@@ -7,7 +7,7 @@
         </div>
       </div>
         <h2 class="region">{{ regionname }}</h2>
-        <div class="trip-list">
+        <div class="fes-list">
           <div class="card" :key="i" v-for="(row, i) in rowList" ref="row-container">
             <a :href="'http:/localhost:8080/fesDetail/'+ row.tv_no" class="imgSpace" >
                 <img :width="230" :src="row.fs_img ? require(`../../../node-back/uploads/${row.fs_img}`) : require('/goodsempty.jpg')" alt="여행지 이미지">
@@ -255,7 +255,7 @@ a:not(:hover) img {
 
 }
 
-.trip-list {
+.fes-list {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
