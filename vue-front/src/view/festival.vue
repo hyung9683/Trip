@@ -1,15 +1,17 @@
 <template>
   <body>
-    <div id="app" class="container">
+    <div id="app" ref="app" class="container">
       <div class="map">
         <div class="col-12">
           <svg ref="map" class="w-100"></svg>
         </div>
       </div>
+      <div class="region-container">
         <h2 class="region">{{ regionname }}</h2>
+      </div>
         <div class="fes-list">
           <div class="card" :key="i" v-for="(row, i) in rowList" ref="row-container">
-            <a :href="'http:/localhost:8080/fesDetail/'+ row.tv_no" class="imgSpace" >
+            <a :href="'http:/localhost:8080/fesDetail/'+ row.fs_no" class="imgSpace" >
                 <img :width="230" :src="row.fs_img ? require(`../../../node-back/uploads/${row.fs_img}`) : require('/goodsempty.jpg')" alt="여행지 이미지">
             </a>  
                 <div class="card-body">
@@ -54,8 +56,12 @@ export default {
   },
   mounted() {
     this.drawMap();
+    window.addEventListener('resize', this.drawMap);
     this.loadFesList();
     this.getFesList(this.$route.params.id);
+  },
+  beforeUnmount(){
+    window.removeEventListener('resize', this.drawMap);
   },
   computed: {
     regionname() {
@@ -66,17 +72,28 @@ export default {
   methods: {
     //지도 생성
     drawMap() {
-      const width = 600;
-      const height = 800;
+      // const width = 500;
+      // const height = 700;
 
-      const svg = d3.select(this.$refs.map)
-        .attr('width', width)
-        .attr('height', height);
+      //svg 요소와 부모 요소 참조 가져오기
+      const svg = d3.select(this.$refs.map);
+        // .attr('width', width)
+        // .attr('height', height);
+      const container = this.$refs.app;
+
+      // 컨테이너 실제 크기를 동적으로 가져오기
+      const width = container.clientWidth / 2;
+      const height = container.clientHeight;
+
+      svg.selectAll('*').remove();
+
+      //svg 크기 설정
+      svg.attr('width', width).attr('height', height);
 
       const projection = d3.geoMercator()
         .center([127.7669, 35.9078])
-        .scale(6700)
-        .translate([width / 2, height / 2]);
+        .scale(5700)
+        .translate([width / 2 -130, height / 2 - 30]);
 
       const path = d3.geoPath().projection(projection);
 
@@ -172,21 +189,30 @@ export default {
 
 <style scoped>
 
+.container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+}
 
 body {
   margin:0;
   overflow: hidden;
 }
+
+svg {
+  width: 100%;
+  height: 100%;
+}
 .card {
   flex-direction: column;
   flex-wrap: wrap;
-  height: 330px;
   display: flex;
   box-sizing: border-box;
-  padding: 20px;
-  padding-right: 50px;
-  padding-left: 50px;
-  scale: 120%;
+  margin-bottom: 20px;
+  /* padding: 5%; */
   
 }
 
@@ -196,7 +222,7 @@ body {
 }
 
 .card-body {
-  position: relative;
+  /* position: relative; */
   padding: 1px;
   
   
@@ -232,16 +258,29 @@ a:not(:hover) img {
 
 .map {
   position: absolute;
-  top: 200px;
-  left: 50px;
+  /* top: 200px;
+  left: 50px; */
+  width: 100%;
+  height: 100%;
+  right: auto;
+}
+
+.region-container {
+  position: absolute;
+  left: 688px;
+  top: 70px;
 }
 .region {
-  position: relative;
+  /* position: relative;
   top: 40px;
   left: 670px;
   border: none;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: 'Courier New', Courier, monospace; */
   
+  margin: 0;
+  padding: 0;
+  border: none;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 .imgSpace {
@@ -255,15 +294,40 @@ a:not(:hover) img {
 
 }
 
-.fes-list {
+/* .fes-list {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(250px, 1fr));
   gap: 20px;
   max-height: calc(100vh - 300px);
   min-height: 700px;
   overflow-y: auto;
-  margin-top: 90px;
-  padding-left: 580px;
+  margin-top: 120px;
+  padding-left: 680px;
+  padding-right: 30px;
+  overflow-x: hidden;
+} */
+
+.fes-list {
+  display: grid;
+  width: 100%;
+  /* grid-template-columns: repeat(4, 1fr); */
+  grid-template-columns: repeat(4, minmax(20%, 1fr));
+  /* grid-template-columns: repeat(4, minmax(250px, 1fr)); */
+  gap: 20px;
+  max-height: calc(100vh - 300px);
+  min-height: 700px;
+  overflow-y: auto;
+  margin-top: 120px;
+  padding-left: 680px;
+  padding-right: 30px;
   overflow-x: hidden;
 }
+
+@media screen and (max-width: 768px) {
+  .fes-list {
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 80px;
+  }
+} 
 </style>

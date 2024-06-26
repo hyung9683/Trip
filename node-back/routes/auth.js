@@ -308,6 +308,7 @@ router.post('/find_pass', function (request, response, next) {
     });
 });
 
+// 사용자 정보 조회
 router.post('/mypage/:user_no', function (req, res) {
     const userno = req.params.user_no;
     console.log(userno);

@@ -23,6 +23,16 @@ module.exports = {
 
    get_img_nm: `SELECT tv_img, tv_sb_img FROM trip_tv_info WHERE tv_no = ?`,
 
+   //리뷰(입력,조회,상세조회)
+   review_write: `INSERT INTO trip_review (tv_no, user_no, user_id, review_goat, review_content) VALUES (?, ?, ?, ?, ?);`,
+  review_detail: `SELECT tv_tit, tv_ads, tv_content FROM trip_tv_info WHERE tv_no = ?;`,
+  get_review: `SELECT * FROM trip_review WHERE tv_no = ?;`,
+  get_my_review: `SELECT * FROM trip_review WHERE user_no = ?;`,
+
+  //축제 리뷰
+  review_write2: `INSERT INTO trip_review (fs_no, user_no, user_id, review_goat, review_content) VALUES (?, ?, ?, ?, ?);`,
+  review_detail2: `SELECT fs_tit, fs_ads, fs_content FROM trip_fs_info WHERE fs_no = ?;`,
+  get_review2: `SELECT * FROM trip_review WHERE fs_no = ?;`,
 
   //사용자 정보 조회
   user_info: `SELECT user_id, user_nick, user_email, user_num, user_zipcode, user_adr1, user_adr2, user_login_ty
