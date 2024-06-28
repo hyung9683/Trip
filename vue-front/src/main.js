@@ -20,6 +20,7 @@ import ContentPage from './mypage/contentpage.vue'
 import LikePage from './mypage/likepage.vue'
 import ReviewPage from './mypage/reviewpage.vue'
 import MyPageUpdate from './mypage/mypageupdate.vue'
+import Pass from './mypage/passwd.vue'
 
 import Trip from './view/trip.vue';
 import Fes from './view/festival.vue';
@@ -103,6 +104,10 @@ const routes = [
         {
             path: 'update',
             component: MyPageUpdate,
+        },
+        {
+            path: 'passwd',
+            component: Pass,
         }
     ]}
     

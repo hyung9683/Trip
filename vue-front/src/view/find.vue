@@ -67,7 +67,7 @@ export default {
             user_passwd: '',
             search_user_id: '',     // id 찾기로 받은 아이디
             response_id_check: false,
-            response_pw_check: false,
+            response_passwd_check: false,
         };
     },
     computed: {

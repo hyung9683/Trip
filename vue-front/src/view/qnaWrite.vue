@@ -60,13 +60,12 @@ export default {
               .then(response => {
                   console.log(response.data);
                   this.$swal("작성완료");
-                  
+                  this.$router.push('/qnamain?page=1');
               })
               .catch(error => {
                   console.log(error);
                   // 오류 처리
               });
-              this.$router.push('/qnamain?page=1');
       }
   }
 }

@@ -39,6 +39,17 @@ module.exports = {
     FROM trip_user
     WHERE user_no = ?`,
 
+  // 사용자 정보 수정
+  user_update: `update trip_user set user_id = ?, user_nick = ?, user_email = ?, user_num = ?, user_zipcode = ?, user_adr1 = ?, user_adr2 = ? 
+  where user_no = ?`,
+
+  // 사용자 비밀번호 수정
+  pass_info: `select user_passwd from trip_user where user_no = ?`,
+  pass_update: `update trip_user set user_passwd = ? where user_no = ?`,
+
+  //계정 삭제
+  user_delete: `delete from trip_user where user_no = ?`,
+
   //pass //230709
   get_password: 'SELECT user_passwd FROM trip_user WHERE user_no = ?',
   pass_update: 'UPDATE trip_user SET user_passwd = ? WHERE user_no = ?', 
@@ -46,7 +57,7 @@ module.exports = {
     // 아이디 비번 찾기
     id_find: `SELECT user_id FROM trip_user WHERE user_email = ?`,
     user_check: `SELECT user_no FROM trip_user WHERE user_email = ? AND user_id = ?`,
-    pass_update_tem: `UPDATE trip_user SET user_pw = ? WHERE user_id = ?`,
+    pass_update_tem: `UPDATE trip_user SET user_passwd = ? WHERE user_id = ?`,
     
 
 tv_best:`SELECT g.*, IFNULL(t.total_good, 0) AS total_good
@@ -78,6 +89,12 @@ ORDER BY total_good DESC;
    tv_list:`select * from trip_tv_info where tv_id = ?`,
    fs_list:`select * from trip_fs_info where fs_id = ?`,
 
+   //마이페이지 좋아요 리스트 조회
+   my_likelist:`select t.tv_no, f.fs_no, t.tv_category, f.fs_category, t.tv_tit, f.fs_tit, t.tv_img, f.fs_img, g.good_day
+from trip_good g inner join trip_tv_info t on g.tv_no = t.tv_no inner join trip_fs_info f on g.fs_no = f.fs_no 
+where  g.user_no = ?
+order by g.good_day desc`,
+
    //qna
    qnaContent: `SELECT * FROM trip_qna JOIN trip_user 
                 WHERE trip_qna.user_no=trip_user.user_no AND qna_no = ?;`,
@@ -96,5 +113,7 @@ ORDER BY total_good DESC;
   review_write: `INSERT INTO trip_review (tv_no, user_no, user_id, review_goat, review_content) VALUES (?, ?, ?, ?, ?);`,
   review_detail: `SELECT tv_tit, tv_ads, tv_content FROM trip_tv_info WHERE tv_no = ?;`,
   get_review: `SELECT * FROM trip_review WHERE tv_no = ?;`,
+
+  board_write: `INSERT INTO trip_board(user_no, board_tit, board_content) VALUES(?,?, ?)`,
   
 }
