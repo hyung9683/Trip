@@ -90,10 +90,33 @@ ORDER BY total_good DESC;
    fs_list:`select * from trip_fs_info where fs_id = ?`,
 
    //마이페이지 좋아요 리스트 조회
-   my_likelist:`select t.tv_no, f.fs_no, t.tv_category, f.fs_category, t.tv_tit, f.fs_tit, t.tv_img, f.fs_img, g.good_day
-from trip_good g inner join trip_tv_info t on g.tv_no = t.tv_no inner join trip_fs_info f on g.fs_no = f.fs_no 
-where  g.user_no = ?
-order by g.good_day desc`,
+    //   mylike_tv:`select g.good_no, t.tv_tit, t.tv_img, g.good_day, g.good_cate
+    // from trip_good g inner join trip_tv_info t on g.tv_no = t.tv_no
+    // where  g.user_no = ?
+    // order by g.good_day desc`,
+
+    // mylike_fs:`select g.good_no, f.fs_tit, f.fs_img, g.good_day, g.good_cate
+    // from trip_good g inner join trip_fs_info f on g.fs_no = f.fs_no
+    // where  g.user_no = ?
+    // order by g.good_day desc`,
+
+    mylike: `SELECT
+                  g.user_no,
+                  g.good_cate,
+                  g.good_day,
+                  COALESCE(t.tv_tit, f.fs_tit) as title,
+                  COALESCE(t.tv_img, f.fs_img) as image,
+                  COALESCE(t.tv_no, f.fs_no) as number
+            FROM
+                  trip_good as g
+            LEFT JOIN
+                  trip_tv_info as t ON g.good_cate = 1 AND g.tv_no = t.tv_no
+            LEFT JOIN
+                  trip_fs_info as f ON g.good_cate = 2 AND g.fs_no = f.fs_no
+            WHERE
+                  g.user_no = ?`,
+                  
+
 
    //qna
    qnaContent: `SELECT * FROM trip_qna JOIN trip_user 

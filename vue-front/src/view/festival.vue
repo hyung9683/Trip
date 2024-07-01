@@ -167,8 +167,8 @@ export default {
         .attr('fill', 'black')
         .text(d => d.properties.name);
     },
-    goToDetail(tripno){
-      window.location.href = `http://localhost:8080/fesDetail/${tripno}`;
+    goToDetail(fesno){
+      window.location.href = `http://localhost:8080/fesDetail/${fesno}`;
     },
     async getFesList(regionid){
         const response = await axios.get(`http://localhost:3000/tripList/regions/api/${regionid}`);
