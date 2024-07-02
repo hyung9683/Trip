@@ -40,7 +40,7 @@ module.exports = {
     WHERE user_no = ?`,
 
   // 사용자 정보 수정
-  user_update: `update trip_user set user_id = ?, user_nick = ?, user_email = ?, user_num = ?, user_zipcode = ?, user_adr1 = ?, user_adr2 = ? 
+  user_update: `UPDATE trip_user SET user_id = ?, user_nick = ?, user_email = ?, user_num = ?, user_zipcode = ?, user_adr1 = ?, user_adr2 = ? 
   where user_no = ?`,
 
   // 사용자 비밀번호 수정
@@ -100,6 +100,7 @@ ORDER BY total_good DESC;
     // where  g.user_no = ?
     // order by g.good_day desc`,
 
+    //좋아요 목록
     mylike: `SELECT
                   g.user_no,
                   g.good_cate,
