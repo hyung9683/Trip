@@ -8,13 +8,13 @@ const store = createStore({
             user: {
                 user_id: '',
                 user_no: '',
-            }
+                
+            } 
         }
     },
     mutations: {
         user(state, data){
             state.user = data;
-            console.log(data);
         }
     },
     plugins: [

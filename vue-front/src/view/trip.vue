@@ -11,8 +11,8 @@
       </div>
         <div class="trip-list">
           <div class="card" :key="i" v-for="(row, i) in rowList" ref="row-container">
-            <a :href="'http:/localhost:8080/TripDetail/'+ row.tv_no" class="imgSpace" >
-                <img style="width:100%;" :src="row.tv_img ? require(`../../../node-back/uploads/${row.tv_img}`) : require('/goodsempty.jpg')" alt="여행지 이미지">
+            <a :href="'/tvdetail/'+ row.tv_no" class="imgSpace" >
+                <img :width="230" :src="row.tv_img ? require(`../../../node-back/uploads/${row.tv_img}`) : require('/goodsempty.jpg')" alt="여행지 이미지">
             </a>  
                 <div class="card-body">
                 <p class="card-text align" @click="goToDetail(row.TV_NO)">{{ row.tv_tit }}</p>
@@ -170,10 +170,10 @@ export default {
         .text(d => d.properties.name);
     },
     goToDetail(tripno){
-      window.location.href = `http://localhost:8080/tripDetail/${tripno}`;
+      window.location.href = `http://localhost:8080/tvdetail/${tripno}`;
     },
     async getTripList(regionid){
-        const response = await axios.get(`http://localhost:3000/triplist/regions/${regionid}`);
+        const response = await axios.get(`http://localhost:3000/trip/regions/${regionid}`);
         this.rowList = response.data;
         this.$nextTick(this.checkscroll);
     },
@@ -219,7 +219,6 @@ svg {
   /* scale: 120%; */
   /* padding: 0 14%; */
   margin-bottom: 20px;
-  /* padding: 5%; */
 }
 
 .card-text {
@@ -306,21 +305,6 @@ a:not(:hover) img {
 
 }
 
-/* .trip-list {
-  display: grid; */
-  /* grid-template-columns: repeat(4, 1fr); */
-  /* grid-template-columns: repeat(auto-fit, minmax(20%, 1fr));
-  gap: 20px;
-  max-height: calc(100vh - 300px);
-  min-height: 700px;
-  overflow-y: auto;
-  margin-top: 120px;
-  padding-left: 680px;
-  padding-right: 30px;
-  overflow-x: hidden;
-  width:100%
-} */
-
 .trip-list {
   display: grid;
   width: 100%;
@@ -343,18 +327,5 @@ a:not(:hover) img {
     padding-right: 20px;
     margin-top: 80px;
   }
-}
-@media only screen and (max-width: 1024px) {
-  .trip-list {
-    grid-template-columns: repeat(3, minmax(250px, 1fr));
-    padding-left: 20px;
-    padding-right: 20px;
-    margin-top: 80px;
-  }
-
-  .region-container {
-    left: 0;
-    right: 0;
-  }
-}
+} 
 </style>

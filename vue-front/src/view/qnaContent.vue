@@ -18,9 +18,9 @@
 
 				</div>
 				<div class="btn_area">
-					<button type="button" class="main_btn" @click="QnaMain">목록으로</button>
+					<button type="button" class="main_btn" @click="Qna">목록으로</button>
 
-					<div v-if="this.user.user_no == this.content[0].uesr_no" class="right_btn">
+					<div v-if="this.user.user_no == this.content[0].user_no" class="right_btn">
 						<button type="button" class="btn" @click="editContent()" v-if="editable === false">수정</button>
 						<button type="button" class="btn" @click="confirmEditContent()" v-else>수정완료</button>
 						<button type="button" class="btn" @click="confirmDeleteContent(item.qna_no)">삭제</button>
@@ -53,7 +53,7 @@ export default {
 	},
 	computed: {
 		user() {
-			return this.$store.state.user; // user 정보가 바뀔 때마다 자동으로 user() 갱신
+			return this.$store.state.user; 
 		},
 	},
 	mounted() {
@@ -92,7 +92,7 @@ export default {
 							showConfirmButton: false,
 							timer: 1500
 						});
-						this.$router.push('/qnamain?page=1');
+						this.$router.push('/qna?page=1');
 					}
 				});
 			}
@@ -107,7 +107,7 @@ export default {
 				},
 			}).then(res => {
 				this.content = res.data;
-				this.$router.push('/qnamain?page=1');
+				this.$router.push('/qna?page=1');
 			}).catch(err => {
 				alert(err);
 			});
@@ -123,7 +123,7 @@ export default {
 
 		},
 		navigateToQnaMain() {
-			this.$router.push('/qnamain?page=1');
+			this.$router.push('/qna?page=1');
 		},
 		confirmEditContent() {
 			axios.post("http://localhost:3000/qna/edit", {
@@ -141,19 +141,15 @@ export default {
 				});
 			this.$swal("수정완료");
 			this.editable = false;
-			// this.$router.push('/qnamain?page=1');
+			
 
 		},
-		QnaMain() {
+		Qna() {
 			console.log("실행 확인")
-			this.$router.push('/qnamain?page=1');
+			this.$router.push('/qna?page=1');
 		}
 	}
 }
-
-
-
-
 
 </script>
 
@@ -217,7 +213,7 @@ div {
 	font-size: 16px;
 	width: 80px;
 	height: 50px;
-	background-color: rgb(255, 225, 160);
+	background-color: #aeaeae;
 	border: black;
 	border-radius: 4px;
 	cursor: pointer;
@@ -234,7 +230,7 @@ div {
 	width: 80px;
 	height: 50px;
 	margin-left: auto;
-	background-color: skyblue;
+	background-color: #aeaeae;
 	border: none;
 	border-radius: 4px;
 	cursor: pointer;
@@ -243,7 +239,7 @@ div {
 }
 
 .btn:hover {
-	background-color: rgb(29, 170, 226);
+	background-color: rgb(161, 161, 161);
 }
 
 .t2 {

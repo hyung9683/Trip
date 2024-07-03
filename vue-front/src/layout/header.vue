@@ -24,7 +24,7 @@
           <li @click="goToJoin">회원가입</li>
         </ul>
 
-        <ul v-else-if="adminCheck == 1" class="join">
+        <ul v-else-if="adminCk == 1" class="join">
           <li @click="goToAdmin">관리 페이지</li>
           <li @click="logout">로그아웃</li>
         </ul>
@@ -54,22 +54,28 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      adminCheck: 0,
+      adminCk: 0,
       keyword: this.$route.query.keyword,
     }
   },
   computed: {
     user() {
       return this.$store.state.user;
+      
+      
     }
+    
   },  
+  
   mounted() {
+    
     if (this.user.user_id == '') {
       // 일단은 로그인 여부 체크 
+      
     }
     else {
       axios({
-        url: "http://localhost:3000/auth/admin_check",
+        url: "http://localhost:3000/auth/admin_ck",
         method: "POST",
         data: {
           user_no: this.user.user_no,
@@ -77,7 +83,7 @@ export default {
       })
         .then(res => {
           if (res.data.message == 'admin') {
-            this.adminCheck = 1;
+            this.adminCk = 1;
           }
         })
         .catch(() => {
@@ -85,54 +91,80 @@ export default {
         })
     }
   },
+
+watch: {
+    'user.user_id'(newVal) {
+      if (newVal) {
+        axios({
+          url: "http://localhost:3000/auth/admin_ck",
+          method: "POST",
+          data: {
+            user_no: this.user.user_no,
+          },
+        })
+          .then(res => {
+            if (res.data.message == 'admin') {
+              this.adminCk = 1;
+            }
+          })
+          .catch(() => {
+            this.$swal("접속 오류");
+          });
+      }
+    }
+  },
+  
   methods: {
 
      goToTrip() {
             window.location.href = `http://localhost:8080/trip/서울특별시/1`;
         },
-      goToFes() {
-        window.location.href = "http://localhost:8080/fes/서울특별시/1"
-      },
-      searchKeyword(keyword) {
-        if (this.keyword) {
-          window.location.href = 'http://localhost:8080/search?keyword=' + keyword;
-        }
-      },
-    
-      goToQna() {
-        window.location.href = `http://localhost:8080/qnamain?page=1`;
-      },
-    
-    
-      goToLogin() {
-        this.$router.push({ path: '/login' });
-      },
-      goToJoin() {
-        this.$router.push({ path: '/join' });
-      },
-      goToAdmin() {
-        this.$router.push({ path: '/admin/list' });
-      },
-      goToMypage() {
-        this.$router.push({ path: '/mypage' });
-      },
-      
-      logout() {
-        this.$store.commit("user", {});
-        this.$swal({
-          position: 'top',
-          icon: 'success',
-          title: '로그아웃되셨습니다.',
-          showConfirmButton: false,
-          timer: 1000
-        })
-          .then(() => {
-            window.location.href = "http://localhost:8080";
-          })
-      },
-      goToHome() {
-        window.location.href = "http://localhost:8080";
+        goToFes() {
+            window.location.href = `http://localhost:8080/festival/서울특별시/1`;
+        },
+    searchKeyword(keyword) {
+      if (this.keyword) {
+        window.location.href = 'http://localhost:8080/search?keyword=' + keyword;
       }
+    },
+   
+    goToQna() {
+      window.location.href = `http://localhost:8080/qna?page=1`;
+    },
+    goToList(){
+       this.$router.push({ path: '/all' });
+    },
+  
+    
+    goToLogin() {
+      this.$router.push({ path: '/login' });
+    },
+     goToJoin() {
+       this.$router.push({ path: '/join' });
+     },
+    goToAdmin() {
+       window.location.href = `http://localhost:8080/admin/qna?page=1`;
+    },
+    goToMypage() {
+      this.$router.push({ path: '/mypage' });
+    },
+    
+    logout() {
+      this.$store.commit("user", {});
+      this.$swal({
+        position: 'top',
+        icon: 'success',
+        title: '로그아웃되셨습니다.',
+        showConfirmButton: false,
+        timer: 1000
+      })
+        .then(() => {
+          window.location.href = "http://localhost:8080";
+        })
+    },
+    goToHome() {
+      window.location.href = "http://localhost:8080";
+    }
   }
 }
 
@@ -257,31 +289,6 @@ input::placeholder {
   margin-left: 16px;
 }
 
-.cart {
-  scale: 78%;
-  margin-left: 24px;
-}
-
-.cart .cartcount {
-  position: absolute;
-  width: 32px;
-  height: 22px;
-  top: -10px;
-  right: -12px;
-  padding: 5px 0px 4px 0px;
-  font-size: 1rem;
-  font-family: GmarketSansMedium;
-  text-align: center;
-  box-sizing: content-box;
-  border-radius: 30px;
-  color: #fff;
-  background: #ff5e00;
-}
-
-/* .fade-enter-active, .fade-leave-active { transition: opacity 0.3s ease-in-out; }
-.fade-enter, .fade-leave-to {
-  opacity: 0;
-} */
 
 .qna {
   font-size: 20px;

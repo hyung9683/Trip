@@ -9,13 +9,13 @@
       <div class="region-container">
         <h2 class="region">{{ regionname }}</h2>
       </div>
-        <div class="fes-list">
+        <div class="trip-list">
           <div class="card" :key="i" v-for="(row, i) in rowList" ref="row-container">
-            <a :href="'http:/localhost:8080/fesDetail/'+ row.fs_no" class="imgSpace" >
+            <a :href="'/fsdetail/'+ row.fs_no" class="imgSpace" >
                 <img :width="230" :src="row.fs_img ? require(`../../../node-back/uploads/${row.fs_img}`) : require('/goodsempty.jpg')" alt="여행지 이미지">
             </a>  
                 <div class="card-body">
-                <p class="card-text align" @click="goToDetail(row.fs_no)">{{ row.fs_tit }}</p>
+                <p class="card-text align" @click="goToDetail2(row.fs_no)">{{ row.fs_tit }}</p>
               </div>
           </div>
         </div>
@@ -56,11 +56,12 @@ export default {
   },
   mounted() {
     this.drawMap();
+    // 화면 크기가 변경될 때마다 맵을 다시 그림
     window.addEventListener('resize', this.drawMap);
     this.loadFesList();
     this.getFesList(this.$route.params.id);
   },
-  beforeUnmount(){
+  beforeUnmount() {
     window.removeEventListener('resize', this.drawMap);
   },
   computed: {
@@ -75,8 +76,7 @@ export default {
       // const width = 500;
       // const height = 700;
 
-      //svg 요소와 부모 요소 참조 가져오기
-      const svg = d3.select(this.$refs.map);
+      const svg = d3.select(this.$refs.map)
         // .attr('width', width)
         // .attr('height', height);
       const container = this.$refs.app;
@@ -90,9 +90,11 @@ export default {
       //svg 크기 설정
       svg.attr('width', width).attr('height', height);
 
+
       const projection = d3.geoMercator()
         .center([127.7669, 35.9078])
         .scale(5700)
+        // .translate([width / 2, height / 2]);
         .translate([width / 2 -130, height / 2 - 30]);
 
       const path = d3.geoPath().projection(projection);
@@ -167,12 +169,13 @@ export default {
         .attr('fill', 'black')
         .text(d => d.properties.name);
     },
-    goToDetail(fesno){
-      window.location.href = `http://localhost:8080/fesDetail/${fesno}`;
+    goToDetail2(fs_no){
+      window.location.href = `http://localhost:8080/fsdetail/${fs_no}`;
     },
     async getFesList(regionid){
-        const response = await axios.get(`http://localhost:3000/tripList/regions/api/${regionid}`);
+        const response = await axios.get(`http://localhost:3000/trip/regions/api/${regionid}`);
         this.rowList = response.data;
+         this.$nextTick(this.checkscroll);
     },
     async loadFesList() {
       const {regionid} = this.$route.params;
@@ -197,6 +200,7 @@ export default {
   flex-direction: row;
 }
 
+
 body {
   margin:0;
   overflow: hidden;
@@ -209,11 +213,12 @@ svg {
 .card {
   flex-direction: column;
   flex-wrap: wrap;
+  /* height: 330px; */
   display: flex;
   box-sizing: border-box;
+  /* scale: 120%; */
+  /* padding: 0 14%; */
   margin-bottom: 20px;
-  /* padding: 5%; */
-  
 }
 
 .card-text {
@@ -223,7 +228,7 @@ svg {
 
 .card-body {
   /* position: relative; */
-  padding: 1px;
+  padding: 10px;
   
   
 }
@@ -258,8 +263,6 @@ a:not(:hover) img {
 
 .map {
   position: absolute;
-  /* top: 200px;
-  left: 50px; */
   width: 100%;
   height: 100%;
   right: auto;
@@ -271,22 +274,30 @@ a:not(:hover) img {
   top: 70px;
 }
 .region {
-  /* position: relative;
-  top: 40px;
-  left: 670px;
+  /* position: fixed;
+  top: 190px;
+  left: 700px;
   border: none;
   font-family: 'Courier New', Courier, monospace; */
-  
+  /* position: relative; */
+  /* top: 40px;
+  left: 790px; */
   margin: 0;
   padding: 0;
   border: none;
   font-family: 'Courier New', Courier, monospace;
+  
 }
 
 .imgSpace {
+  /* max-width: 230px;
+  max-height: 900px;
+  min-width: 130px;
+  min-height: 230px; */
   width: 100%;
   overflow: hidden;
-  border-radius: 1%;
+  /* padding: auto; */
+  border-radius: 5%;
   background-color: #eeeeee;
   display: flex;
   align-items: center;
@@ -294,20 +305,7 @@ a:not(:hover) img {
 
 }
 
-/* .fes-list {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(250px, 1fr));
-  gap: 20px;
-  max-height: calc(100vh - 300px);
-  min-height: 700px;
-  overflow-y: auto;
-  margin-top: 120px;
-  padding-left: 680px;
-  padding-right: 30px;
-  overflow-x: hidden;
-} */
-
-.fes-list {
+.trip-list {
   display: grid;
   width: 100%;
   /* grid-template-columns: repeat(4, 1fr); */
@@ -324,7 +322,7 @@ a:not(:hover) img {
 }
 
 @media screen and (max-width: 768px) {
-  .fes-list {
+  .trip-list {
     padding-left: 20px;
     padding-right: 20px;
     margin-top: 80px;

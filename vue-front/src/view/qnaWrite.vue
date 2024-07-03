@@ -51,6 +51,10 @@ export default {
   },
   methods: {
       onSubmitWrite() {
+       if (!this.qna_tit.trim() || !this.qna_content.trim()) {
+        this.$swal("제목과 내용을 모두 입력해 주세요.");
+        return;
+      }
           axios.post("http://localhost:3000/qna/write", {
               user_no: this.user.user_no,
               qna_tit: this.qna_tit,
@@ -60,12 +64,14 @@ export default {
               .then(response => {
                   console.log(response.data);
                   this.$swal("작성완료");
-                  this.$router.push('/qnamain?page=1');
+                  this.$router.push('/qna?page=1');
+                  
               })
               .catch(error => {
                   console.log(error);
                   // 오류 처리
               });
+              
       }
   }
 }
@@ -145,7 +151,7 @@ div {
   display: block;
   width: 30%;
   padding: 10px;
-  background-color: skyblue;
+  background-color: rgb(206, 214, 219);
   color: black;
   border: black;
   border-radius: 4px;
@@ -157,7 +163,7 @@ div {
 }
 
 .submit-button:hover {
-  background-color: rgb(75, 191, 236);
+  background-color: rgb(189, 202, 208);
 }
 
 .ALL {

@@ -45,15 +45,7 @@ router.post('/kakaoLoginProcess', function (request, response) {
                 }
             })
         }
-        // // 로그인 
-        // db.query(sql.get_user_no, [kakao.user_id], function (error, results, fields) {
-        //     if (error) {
-        //         console.log(error)
-        //     }
-        //     return response.status(200).json({
-        //         message: results[0].user_no
-        //     })
-        // })
+       
         // 로그인
 db.query(sql.get_user_no, [kakao.user_id], function (error, results, fields) {
     if (error) {
@@ -128,7 +120,7 @@ router.post('/naverlogin', function (request, response) {
 router.post('/join_process', function (request, response) {
 
     const user = request.body;
-    const encryptedPW = bcrypt.hashSync(user.user_passwd, 10); // 비밀번호 암호화
+    const encryptedPW = bcrypt.hashSync(user.user_passwd, 10);
     console.log(encryptedPW);
 
     db.query(sql.id_check, [user.user_id], function (error, results, fields) {
@@ -167,7 +159,7 @@ router.post('/login_process', function (request, response) {
                 const same = bcrypt.compareSync(loginUser.user_passwd, results[0].user_passwd);
 
                 if (same) {
-                    // ID에 저장된 pw 값과 입력한 pw값이 동일한 경우
+                    // ID에 저장된 비번 동일한 경우
                     db.query(sql.get_user_no, [loginUser.user_id], function (error, results, fields) {
                         return response.status(200).json({
                             message: results[0].user_no
@@ -175,7 +167,7 @@ router.post('/login_process', function (request, response) {
                     })
                 }
                 else {
-                    // 비밀번호 불일치
+                    // 비번 불일치
                     return response.status(200).json({
                         message: 'incorrect_pw'
                     })
@@ -185,13 +177,11 @@ router.post('/login_process', function (request, response) {
     })
 })
 
-// 관리자 체크 
-router.post('/admin_check', function (request, response) {
+// 관리자
+router.post('/admin_ck', function (request, response) {
     const loginUser = request.body;
-
-    db.query(sql.admin_check, [loginUser.user_no], function (error, results, fields) {
-        if (results[0].user_login_ty == 1) {
-            // 로그인한 유저의 TP가 1(관리자)인 경우
+    db.query(sql.admin_ck, [loginUser.user_no], function (error, results, fields) {
+        if (results[0].user_type == 1) {
             return response.status(200).json({
                 message: 'admin'
             })
@@ -203,39 +193,6 @@ router.post('/admin_check', function (request, response) {
         }
     })
 })
-
-// 회원리스트
-router.get('/admin/userlist/:keyword', function (request, response, next) {
-
-    const keyword = request.params.keyword;
-    let search = '';
-
-    if (keyword != 'none') {
-        search = ' AND user_email Like "%' + keyword + '%" ';
-    }
-
-    db.query(sql.userlist + search, function (error, results, fields) {
-        if (error) {
-            console.error(error);
-            return response.status(500).json({ error: '회원리스트에러' });
-        }
-        response.json(results);
-    });
-});
-
-// 회원 삭제
-router.delete('/admin/userlist/:user_no', function (request, response, next) {
-    const userNo = request.params.user_no;
-
-    db.query(sql.deleteUser, [userNo], function (error, result, fields) {
-        if (error) {
-            console.error(error);
-            return response.status(500).json({ error: '회원삭제에러' });
-        }
-        return response.status(200).json({ message: '회원삭제성공' });
-    });
-});
-
 
 // 아이디 찾기
 router.post('/findId', function (request, response, next) {
@@ -274,7 +231,7 @@ function generateTempPassword() {
     return tempPassword;
 }
 
-// 비번 찾기 230711
+// 비번 찾기
 router.post('/find_pass', function (request, response, next) {
     const user_id = request.body.user_id;
     const user_email = request.body.user_email;
@@ -286,12 +243,9 @@ router.post('/find_pass', function (request, response, next) {
         }
 
         if (results.length == 0) {
-            // 이메일이 데이터베이스에 존재하지 않는 경우
             return response.status(404).json({ message: 'user_not_found' });
         }
-
         const user_passwd = generateTempPassword(); // 임시 비밀번호 생성
-
         const encryptedPW = bcrypt.hashSync(user_passwd, 10); // 임시 비밀번호 암호화
 
         // 업데이트
@@ -307,6 +261,5 @@ router.post('/find_pass', function (request, response, next) {
 
     });
 });
-
 
 module.exports = router;

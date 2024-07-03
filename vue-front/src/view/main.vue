@@ -16,14 +16,14 @@
             </splide>
         </div>
         <div class="content cate-list">
-            <h2 class="home_title">여행지 BEST</h2>
-            <div class="s1" style="height: 230px;">
+            <h2 class="home_title" >여행지 BEST</h2><br>
+            <div class="s1" style="height: 230px; scale:120%">
                 <div class="card" style="width: 20rem; height: 370px; border: none; margin: 0 1%;"
                     v-for="(tv, index) in filteredTvList(1).slice(0, 4)" :key="index">
                     
                     <span class="rank-badge"><i v-if="!index" class="fas fa-crown crown"></i><strong>{{ index + 1 }}</strong> 위</span>
-                    <a :href="'http://localhost:8080/tvDetail/' + tv.tv_no" class="imgSpace">
-                        <img :width="230"
+                    <a :href="'http://localhost:8080/tvdetail/' + tv.tv_no" class="imgSpace">
+                        <img :width="230 "
                             :src="tv.tv_img ? require(`../../../node-back/uploads/${tv.tv_img}`) : '/empty.jpg'"
                             alt="이미지" />
                     </a>
@@ -37,13 +37,13 @@
                     </div>
                 </div>
             </div>
-
-            <h2 class="home_title">축제 BEST</h2>
-            <div class="s1" style="height: 230px;">
+<br/>
+            <h2 class="home_title">축제 BEST</h2><br/><br/>
+            <div class="s1" style="height: 350px; scale:120%">
                 <div class="card" style="width: 20rem; height: 370px; border: none; margin: 0 1%;"
                     v-for="(fs, index) in filteredFsList(2).slice(0, 4)" :key="index">
                     <span class="rank-badge"><i v-if="!index" class="fas fa-crown crown"></i><strong>{{ index + 1 }}</strong> 위</span>
-                    <a :href="'http://localhost:8080/fsDetail/' + fs.fs_no" class="imgSpace">
+                    <a :href="'http://localhost:8080/fsdetail/' + fs.fs_no" class="imgSpace">
                         <img :width="230"
                             :src="fs.fs_img ? require(`../../../node-back/uploads/${fs.fs_img}`) : '/empty.jpg'"
                             alt="이미지" />
@@ -118,23 +118,11 @@ export default {
                 console.error(error);
             }
         },
-        // async loadRegionData() {
-        //        try { const korea = await axios.get('../assets/korea.json');
-        //         const features = korea.data.features;
-        //         const regionData = features.map(feature => ({
-        //             id: feature.properties.id,
-        //             name: feature.properties.name
-        //         }));
-        //         return regionData;
-        //     } catch(e) {
-        //         console.error('에러');
-        //     }
-        // },
-        goToDetail(tvno) {
-            window.location.href = `http://localhost:8080/tvDetail/${tvno}`;
+        goToDetail(tv_no) {
+            window.location.href = `http://localhost:8080/tvdetail/${tv_no}`;
         },
-         goToDetail2(fsno) {
-            window.location.href = `http://localhost:8080/fsDetail/${fsno}`;
+         goToDetail2(fs_no) {
+            window.location.href = `http://localhost:8080/fsdetail/${fs_no}`;
         },
         formatPrice(price) {
             if (price !== undefined) {

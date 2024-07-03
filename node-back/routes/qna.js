@@ -37,7 +37,7 @@ router.post('/edit', (req, res) => {
 // 답변 작성
 router.post('/write_ans', (req, res) => {
   const writeAns = req.body;
-  db.query(sql.ansWrite, [writeAns.qna_ans, writeAns.qna_no], function (error, result) { //.클라요청
+  db.query(sql.ansWrite, [writeAns.qna_ans, writeAns.qna_no], function (error, result) { 
     if (error) {
       console.error(error);
       return res.status(500).json({ error: 'error' });
@@ -49,7 +49,7 @@ router.post('/write_ans', (req, res) => {
 
 });
 
-// qna 상세 내용 불러오기
+// qna 상세 내용
 router.post('/qnacontent', (req, res) => {
   const qnano = req.body.qna_no;
 
@@ -81,7 +81,7 @@ router.post('/write', function (req, res) {
 
 });
 
-// qna목록 불러오기
+// qna목록
 router.post('/qna_list', (req, res) => {
   const qnapage = req.body;
 
@@ -91,6 +91,14 @@ router.post('/qna_list', (req, res) => {
   });
 });
 
+// 관리자 qna목록
+router.post('/qna_admin_list', (req, res) => {
+
+  db.query(sql.qnaAdmin, (err, result, fields) => {
+
+    res.send(result);
+  });
+});
 
 //qna 글 갯수 불러오기
 router.post('/boardlistcnt', (req, res) => {
