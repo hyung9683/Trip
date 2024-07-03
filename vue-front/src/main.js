@@ -7,110 +7,161 @@ import Vuetify from 'vuetify'
 import store from './store'
 
 import defaultLayout from './layout/defaultLayout.vue'
-import MyPageLayout from './layout/mypageLayout'
-
 import MainPage from './view/main'
 import Login from './view/login.vue'
 import Join from './view/join.vue'
 import Find from './view/find.vue'
 
-import MyPage from './mypage/mypage.vue'
-import QnaPage from './mypage/qnapage.vue'
-import ContentPage from './mypage/contentpage.vue'
-import LikePage from './mypage/likepage.vue'
-import ReviewPage from './mypage/reviewpage.vue'
-import MyPageUpdate from './mypage/mypageupdate.vue'
-import Pass from './mypage/passwd.vue'
-
 import Trip from './view/trip.vue';
-import Fes from './view/festival.vue';
+import Festival from './view/festival.vue';
 
-import qnaMain from './view/qnaMain.vue'
+import qna from './view/qna.vue'
 import qnaWrite from './view/qnaWrite.vue'
 import qnaContent from './view/qnaContent'
+
+
+import SearchPage from './view/search.vue'
+
+import fsDetail from './view/fsdetail.vue'
+import tvDetail from './view/tvdetail.vue'
+import All from './view/all.vue'
+
+
+//관리자
+import Qna from './admin/qna.vue'
+import QnaAns from './admin/qnaAns.vue'
+import QnaContent from './admin/qnaContent.vue'
+import UserInfo from './admin/userinfo.vue'
+
+import AdminLayout from './layout/adminLayout.vue'
+
+import MyPageLayout from './layout/mypageLayout'
+import MyPage from './mypage/mypage.vue'
+import myLike from './mypage/mylikepage.vue'
+import myQna from './mypage/myQna.vue'
+import myReview from './mypage/myReview.vue'
+import Contentpage from './mypage/contentpage.vue'
+import MyPageUpdate from './mypage/mypageupdate.vue'
+import Pass from './mypage/passwd.vue'
 
 const routes = [
     {
         path: '/',
-        name: 'defaultLayout',
         component: defaultLayout,
         children: [
             {
                 path: '/',
                 component: MainPage,
             },
+        {
+            path: '/login',
+            component: Login,
+        }
+        ,
+        {
+            path: '/join',
+            component: Join,
+        },
+        {
+            path: '/find',
+            component: Find,
+        },
+        {
+            path:'/trip/:name/:id',
+            component: Trip
+        },
+        {
+            path:'/festival/:name/:id',
+            component: Festival
+        },
+        {
+            path: '/qna',
+            component: qna,
+        },
+        {
+            path: '/qnawrite',
+            component: qnaWrite,
+        },
+        {
+            path: '/qna/qnacontent',
+            component:qnaContent,
+        },
+        {
+            path: '/search',
+            name: 'search',
+            component: SearchPage,
+        },
+        {
+            path: '/fsdetail/:fs_no',
+            component: fsDetail,
+        },
+        {
+            path: '/tvdetail/:tv_no',
+            component: tvDetail,
+        },
+        {
+            path: '/all',
+            component: All,
+        },
+    ]},
+    {
+        path: '/admin/',
+        component: AdminLayout,
+        children: [
             {
-                path: '/login',
-                component: Login,
-            }
-            ,
-            {
-                path: '/join',
-                component: Join,
+                path:'qna',
+                component: Qna,
             },
             {
-                path: '/find',
-                component: Find,
+                path:'qna/qnacontent/write',
+                component:QnaAns
             },
             {
-                path:'/trip/:name/:id',
-                component: Trip
+                path:'qna/qnacontent',
+                component:QnaContent
             },
             {
-                path: '/qnamain',
-                component: qnaMain,
+                path:'userinfo',
+                component:UserInfo
             },
-            {
-                path: '/qnawrite',
-                component: qnaWrite,
-            },
-            {
-                path: '/qnamain/qnacontent',
-                component:qnaContent,
-            },
-            {
-                path: '/fes/:name/:id',
-                component:Fes,
-            }
-       
-    ]
-},
+            
+        ]
+    },
     {
     
-    path: '/mypage/',
-    name: 'mypagelayout',
-    component: MyPageLayout,
-    children: [
-        {
-            path: '',
-            component: MyPage,
-        },
-        {
-            path: 'likepage',
-            component: LikePage,
-        },
-        {
-            path: 'reviewpage',
-            component: ReviewPage,
-        },
-        {
-            path: 'contentpage',
-            component: ContentPage,
-        },
-        {
-            path: 'qnapage',
-            component: QnaPage,
-        },
-        {
-            path: 'update',
-            component: MyPageUpdate,
-        },
-        {
-            path: 'passwd',
-            component: Pass,
-        }
-    ]}
-    
+        path: '/mypage/',
+        name: 'mypagelayout',
+        component: MyPageLayout,
+        children: [
+            {
+                path: '',
+                component: MyPage,
+            },
+            {
+                path: 'qnapage',
+                component: myQna,
+            },
+            {
+                path: 'reviewpage',
+                component: myReview,
+            },
+            {
+                path: 'likepage',
+                component: myLike,
+            },
+            {
+                path: 'contentpage',
+                component: Contentpage,
+            },
+            {
+                path: 'update',
+                component: MyPageUpdate,
+            },
+            {
+                path: 'passwd',
+                component: Pass,
+            }
+        ]}
 ]
 
 
