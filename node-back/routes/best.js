@@ -48,7 +48,7 @@ function sortCaseReplace(sortCase) {
 function sortCaseReplace2(sortCase) {
     let order2 = ` ORDER BY fs_no Desc`; // 최근 순
     if  (sortCase == 3) { // 오래된순
-        order2 = ` ORDER BY fs_no DESC`;
+        order2 = ` ORDER BY fs_no`;
     }
     return order2;
 }

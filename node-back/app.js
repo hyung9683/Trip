@@ -14,15 +14,16 @@ const authRouter = require('./routes/auth');
 const bestRouter = require('./routes/best');
 const tripRouter = require('./routes/trip');
 const qnaRouter = require('./routes/qna');
+const adminRouter = require('./routes/admin');
 const MyPage = require('./routes/mypage');
-// const Admin = require('./routes/admin');
 
-app.use('/tripList', tripRouter);
+
+app.use('/trip', tripRouter);
 app.use('/auth', authRouter);
 app.use('/best', bestRouter);
+app.use('/admin', adminRouter);
 app.use('/qna', qnaRouter);
 app.use('/mypage', MyPage);
-// app.use('/admin', Admin);
 
 app.listen(3000, function() {
     console.log('Server Running at http://localhost:3000');

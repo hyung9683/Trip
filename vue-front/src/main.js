@@ -19,7 +19,6 @@ import qna from './view/qna.vue'
 import qnaWrite from './view/qnaWrite.vue'
 import qnaContent from './view/qnaContent'
 
-
 import SearchPage from './view/search.vue'
 
 import fsDetail from './view/fsdetail.vue'
@@ -27,7 +26,6 @@ import tvDetail from './view/tvdetail.vue'
 import All from './view/all.vue'
 
 
-//관리자
 import Qna from './admin/qna.vue'
 import QnaAns from './admin/qnaAns.vue'
 import QnaContent from './admin/qnaContent.vue'
@@ -121,7 +119,7 @@ const routes = [
                 component:QnaContent
             },
             {
-                path:'userinfo',
+                path:'user',
                 component:UserInfo
             },
             

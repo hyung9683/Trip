@@ -138,9 +138,9 @@ ORDER BY total_good DESC;
   WHERE fs_tit LIKE ?`,
 
 //전체목록
-  all_tv_list: `SELECT tv_tit, tv_img, tv_local_nm, tv_no
+  all_tv_list: `SELECT tv_no, tv_tit, tv_img, tv_local_nm
   FROM trip_tv_info`,
-  all_fs_list: `SELECT fs_tit, fs_img, fs_local_nm, fs_date, fs_no
+  all_fs_list: `SELECT fs_no, fs_tit, fs_img, fs_local_nm, fs_date
   FROM trip_fs_info`
 
 
