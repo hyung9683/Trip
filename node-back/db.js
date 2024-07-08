@@ -5,6 +5,7 @@ const db = {
     user: "root",
     password: "1234"
   };
+
 const dbPool = require('mysql').createPool(db);
 
 module.exports = dbPool;

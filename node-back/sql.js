@@ -15,6 +15,7 @@ module.exports = {
 
   // admin 기능 
 
+   admin_search: `SELECT * FROM trip_user`,
    admin_ck: `SELECT user_type FROM trip_user WHERE user_no = ?`,
    //마이페이지 좋아요 리스트 조회
    mylike: `SELECT
@@ -33,7 +34,7 @@ LEFT JOIN
 WHERE
    g.user_no = ?`,
 //사용자 정보 조회
-user_info: `SELECT user_id, user_nick, user_email, user_num, user_zipcode, user_adr1, user_adr2, user_login_ty
+user_info: `SELECT user_no, user_id, user_nick, user_email, user_num, user_zipcode, user_adr1, user_adr2, user_login_ty
 FROM trip_user
 WHERE user_no = ?`,
    // 사용자 정보 수정
