@@ -8,6 +8,11 @@ lerna-debug.log*
 .pnpm-debug.log*
 uploads/
 myImg/
+0625백업/
+0626백업/
+0709백업/
+0712백업/
+백업/
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
