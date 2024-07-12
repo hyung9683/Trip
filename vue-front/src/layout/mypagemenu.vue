@@ -49,6 +49,12 @@ export default {
     font-style: normal;
 }
 
+/* * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+} */
+
 .menu {
     background-color: #FFDC9F;
     height: 100%;
@@ -69,39 +75,41 @@ export default {
 }
 
 .menu a {
-    display: block;
+    display: flex;
     text-align: center;
-    height: 60px;
+    /* height: 60px;
     padding-top: 18px;
-    padding-bottom: 18px;
+    padding-bottom: 18px; */
+    padding: 18px 0;
     transition: all 0.3s ease;
     text-decoration: none;
-    top: 100px;
+    /* top: 100px; */
 }
 
 .menu p {
-    margin: auto;
+    display: flex;
+    margin: 0;
     font-size: 14px;
     color: #000000;
-    padding-top: 4px;
-    top: 100px;
+    padding-top: 8px;
+    height: 16px;
+    line-height: 16px;
+    /* top: 100px; */
 }
 
 .menu .m:hover {
     background-color: #8E7C68;
 }
 
-.menu .m {
-    /* box-shadow: 0 1px 10px #000000; */
-}
 
-.active {
+.menu .m:active {
     background-color: #ffffff;
 }
 
 .bi {
     color: black;
 }
+
 /* .m {
     justify-content: center;
     text-align: center;
@@ -116,5 +124,26 @@ export default {
     top: 150px;
     
 } */
+
+.menu .m {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 80px; 
+    padding: 0; 
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+}
+
+.menu .m i {
+    padding-top: 20px;
+}
+
+router-link {
+    display: flex;
+    height: auto;
+}
 
 </style>

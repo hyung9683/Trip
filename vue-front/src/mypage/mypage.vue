@@ -1,16 +1,14 @@
 <template>
-        <div>
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <div class="mypage-container">
+            <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous"> -->
             <h1 class="myinfo">내 정보</h1>
             <table class="mypage-info">
-                <tr>
-                    <td rowspan="6" class="card" v-if="this.user.user_no === loginuser.user_no">
-                        <img v-if="ImageSrc" :src="ImageSrc">
+                <tr class="box">
+                    <td  rowspan="6" class="box-body">
+                        <img style="width:100%;" :src="ImageSrc">
                         <input type="file" class="form-controller" @change="uploadImage">
                     </td>
-                </tr>
-                <tr>
-                    
                 </tr>
                 <tr>
                     <td class="user-id">아이디:</td>
@@ -29,13 +27,14 @@
                      <td class="infodata">{{ loginuser.user_adr1 }}</td>
                  </tr>
             </table>
-            <button class="btn btn-update" @click=goToUpdate()>회원정보 수정</button>
-            <button class="btn btn-delete" @click="confirmDelete(loginuser)">회원탈퇴</button>
+            <button class="btn btn-info btn-update" @click=goToUpdate()>회원정보 수정</button>
+            <button class="btn btn-danger btn-delete" @click="confirmDelete(loginuser)">회원탈퇴</button>
         </div>
 </template>
 
 <script>
 import axios from 'axios';
+
 export default {
     components: {
     },
@@ -76,36 +75,109 @@ export default {
                 title: `${user.user_nick} 회원을 삭제 하시겠습니까?`,
                 icon: 'question',
                 showCancelButton: true,
-                confimButtonText: '삭제',
+                confirmButtonText: '삭제',
                 cancelButtonText: '취소',
                 reversButtons: true 
             }).then(result => {
-                if (result.value) {
-                    this.deleteUser(user);
-                    this.$swal({
-                        position: 'top',
-                        icon: 'success',
-                        title: '삭제되었습니다.',
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
+                if (result.value && this.loginuser.user_login_ty === 0) {
+                    this.userDele();
+                }
+                else if(result.value && this.loginuser.user_login_ty === 1) {
+                    this.deleteKakaoAccount();
                 }
             });
         },
-        async deleteUser() {
+        //데이터 5mb
+        async uploadImage(event) {
+            const file = event.target.files[0];
+            const formData = new FormData();
+            formData.append('image', file);
+            // console.log(file);
+
             try {
-                const response = await axios.delete(`http://localhost:3000/mypage/delete/${this.user.user_no}`);
-                if (response.status === 200) {
-                    this.$swal({
-                        position: 'top',
-                        icon: 'success',
-                        title: '삭제되었습니다.',
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                    // 로그아웃 처리나 홈으로 리디렉션 등 추가 처리
-                    this.$store.dispatch('logout'); // Vuex 스토어의 로그아웃 액션 호출
-                    this.$router.push({ path: '/' }); // 홈 페이지로 리디렉션
+                const response = await axios.post('http://localhost:3000/mypage/upload', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+                const imageName = response.data.filename;
+                const userNo = this.user.user_no;
+                const profileData = JSON.stringify({ imageName, userNo });
+                localStorage.setItem(`profileImage_${userNo}`, profileData);
+                this.loadImage();
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        loadImage() {
+            try {
+                const userNo = this.user.user_no;
+                const profileData = localStorage.getItem(`profileImage_${userNo}`);
+
+             if (profileData) {
+
+                const { imageName, userNo } = JSON.parse(profileData);
+                if(imageName && userNo === this.user.user_no) {
+
+                    this.ImageSrc = `http://localhost:3000/mypage/images/${imageName}`;
+                    console.log("Image loaded:", this.ImageSrc);
+
+                } else {
+
+                    this.ImageSrc = require(`/goodsempty.jpg`);
+
+                }
+
+             } else {
+
+                this.ImageSrc = require(`/goodsempty.jpg`);
+
+                }
+            } catch(error) {
+                console.error(error);
+            }
+        },
+
+        async userDele() {
+            try {
+        const response = await axios.delete(`http://localhost:3000/mypage/delete/${this.user.user_no}`);
+        if (response.status === 200) {
+            this.$swal({
+              position:'top',
+              icon: 'success',
+              title: '회원탈퇴 성공',
+              showConfirmButton: false,
+              timer: 1500
+            });
+        }
+        this.$store.commit("user", { user_id: '', user_no: '' });
+        this.$nextTick(() => {
+
+          this.$router.push({ path: '/' });
+        
+        });
+
+      } catch (err) {
+        console.error('err');
+        this.$swal({
+          icon: 'error',
+          title: '삭제 실패',
+          text: '계정 삭제에 실패했습니다.'
+        });
+      }
+        },
+       async deleteKakaoAccount() {
+
+            try{ 
+                const response = await axios.delete('http://localhost:3000/mypage/kakaoDelete', {
+
+                    data: {
+                        user_id: this.user.user_id,
+                        user_no: this.user.user_no
+                    }
+                });
+                if (response.data.message === '성공적으로 삭제되었습니다.') {
+                    return response.data;
                 }
             } catch (err) {
                 console.error(err);
@@ -115,34 +187,35 @@ export default {
                     text: '계정 삭제에 실패했습니다.'
                 });
             }
-        },
-        //데이터 5mb
-        async uploadImage(event) {
-            const file = event.target.files[0];
-            const formData = new FormData();
-            formData.append('image', file);
-            console.log(file);
+           const user_id = this.$store.state.user.user_id;
+            const user_no = this.$store.state.user.user_no;
+            axios({
+                url: "http://localhost:3000/mypage/kakaoDelete",
+                method: "DELETE",
+                data: {
+                    user_id: user_id,
+                    user_no: user_no
+                }
+            }).then(res => {
+                if (res.data.message === '성공적으로 삭제되었습니다.') {
+                    this.$swal({
+                        position: 'top',
+                        icon: 'success',
+                        title: '카카오 계정 삭제 완료!',
+                        showConfirmButton: false,
+                        timer: 1000
+                    }).then(() => {
+                        this.$store.commit("user", { user_id: '', user_no: '' });
+                        this.$nextTick(() => {
 
-            try {
-                const response = await axios.post('http://localhost:3000/mypage/upload', formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                });
-                const imageName = response.data.filename;
-                localStorage.setItem('profileImage', imageName);
-                this.loadImage();
-            } catch (error) {
-                console.error(error);
-            }
-        },
-        loadImage() {
-            const imageName = localStorage.getItem('profileImage');
-            if (imageName && this.user.user_no === this.loginuser.user_no) {
-                this.ImageSrc = `http://localhost:3000/mypage/images/${imageName}`;
-            } else {
-                this.ImageSrc = require(`../../goodsempty.jpg`);
-            }
+                         this.$router.push({ path: '/' });
+
+                         });
+                    });
+                }
+            }).catch(err => {
+                console.log(err);
+            });
         }
     },
 }
@@ -155,52 +228,60 @@ export default {
     font-style: normal;
 }
 
+/* * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+} */
 
-div {
+
+.mypage-container {
     font-family: 'GmarketSansMedium';
-    background-color: #DDC9BC;
     position: relative;
-    top: 140px;
-    right: 30px;
-    height: 100%;
     width: 100%;
-    overflow:hidden;
+    height: 100%;
+    overflow: hidden;
 }
 
 
 .mypage-info {
-    display:block;
-    position: relative;
-    box-shadow: 0 1px 1px;
-    width: 100%;
-    border-collapse: collapse;
-    
+    position:relative;
+    background-color: #DDC9BC;
+    box-shadow: 0 0.3px 1px;
+    width: 80%;
+    height: 100%;
+    left: 110px;
+    bottom:5px;
+    border:none;
 }
+
 
 .myinfo {
     position: relative;
     justify-content: center;
-    left: 720px;
+    left: 800px;
 }
 
 
 .infodata {
-    display:block;
     position: relative;
     align-content: center;
-    padding-top: 10px;
-    padding-bottom: 2px;
     text-align: center;
-    box-shadow: 0 1px 0 #8E7C68;
+    height: 100%;
+    /* text-decoration: underline; */
     
     /* left: 100px; */
     /* bottom: 12px; */
-    width:50%;
-    top: 4px;
+    background-color: #cfc0b6;
+    box-shadow: -0.4px 0.2px 0.2px; 
+    width: 100%;
 }
 
-.user-id {
-    width: 8%;
+.user-id, .user-nick, .user-email, .user-adr {
+    text-align: center;
+    width: 13%;
+    padding-top: 8px;
+    padding-left: 21px;
 }
 
 .btn-update {
@@ -208,9 +289,17 @@ div {
     align-content: center;
     justify-content: center;
     align-items: center;
-    left: 460px;
-    top: 30px;
-    scale: 140%;
+    left: 109px;
+    top: 2px;
+    scale: 100%;
+    border-radius: 3px;
+    background-color: #c2d7ff;
+}
+
+.btn-update:hover {
+
+    background-color: rgb(78, 148, 194)
+
 }
 
 .btn-delete {
@@ -218,27 +307,48 @@ div {
     align-content: center;
     justify-content: center;
     align-items: center;
-    left: 510px;
-    top: 30px;
-    scale: 143%;
+    left: 111px;
+    top: 2px;
+    scale: 100%;
+    border-radius: 3px;
+    background-color: rgb(255, 188, 161);
 }
 
-.card {
-    width:25%;
+.btn-delete:hover {
+
+    background-color: rgb(190, 102, 98);
+}
+
+.box {
+    padding: 0;
+    margin: 0;
+    background-color: #cfc0b6;
+    border:none;
+
+}
+.box-body {
+    width:19%;
     text-align: center;
     vertical-align: middle;
+    border-spacing: 0;
+    border-style: none;
+    padding: 5px 13px 5px 10px;
+    position:relative;
+    left: 1px;
+    box-shadow: 0.3px 0px 0.5px;
 }
 
-.card img {
+img {
     max-width: 100%;
     height: auto;
-    border-radius: 1px;
+    border-radius: 4px;
     box-shadow: 0 2px 4px rgb(0, 0, 0, 0.1);
 }
 
 
 input {
-    text-align: center;
+    position: relative;
+    right: 8px;
 }
 
 .form-controller {
@@ -249,5 +359,14 @@ input {
     margin-left: 20px;
     box-sizing: border-box;
 
+}
+
+.mypage-container p {
+    height: 16px;
+    margin: 0;
+    font-size: 14px;
+    color: #000000;
+    padding-top: 8px;
+    line-height: 16px;
 }
 </style>

@@ -5,6 +5,9 @@ import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import Vuetify from 'vuetify'
 import store from './store'
+// import mitt from 'mitt'
+
+// const emitter = mitt();
 
 import defaultLayout from './layout/defaultLayout.vue'
 import MainPage from './view/main'
@@ -29,7 +32,10 @@ import All from './view/all.vue'
 import Qna from './admin/qna.vue'
 import QnaAns from './admin/qnaAns.vue'
 import QnaContent from './admin/qnaContent.vue'
-import UserInfo from './admin/userinfo.vue'
+import UserInfo  from './admin/userinfo.vue'
+import AdminTrip  from './admin/admintrip.vue'
+import WriteFs  from './admin/writefs.vue'
+import WriteTrip  from './admin/writetrip.vue'
 
 import AdminLayout from './layout/adminLayout.vue'
 
@@ -122,6 +128,18 @@ const routes = [
                 path:'user',
                 component:UserInfo
             },
+            {
+                path:'admintrip',
+                component:AdminTrip
+            },
+            {
+                path:'writefs',
+                component:WriteFs
+            },
+            {
+                path:'writetrip',
+                component:WriteTrip
+            },
             
         ]
     },
@@ -175,4 +193,5 @@ app.use(router);
 app.use(store);
 app.use(VueSweetalert2);
 app.use(Vuetify);
+// app.config.globalProperties.emitter = emitter;
 app.mount('#app')

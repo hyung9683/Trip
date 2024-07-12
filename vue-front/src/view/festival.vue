@@ -133,7 +133,7 @@ export default {
         .on('click', (event, d) => { // 지역에 따라 이름과 id를 갖고 온다
           const regionname = d.properties.name;
           const regionid = d.properties.id
-          this.$router.push(`/fes/${regionname}/${regionid}`);
+          this.$router.push(`/festival/${regionname}/${regionid}`);
           this.getFesList(regionid);
         });
 

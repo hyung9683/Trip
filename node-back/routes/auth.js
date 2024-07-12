@@ -34,10 +34,11 @@ router.post('/kakaoJoinProcess', function (request, response) {
 
 router.post('/kakaoLoginProcess', function (request, response) {
     const kakao = request.body;
-
+    console.log(kakao);
     // 데이터 없을 시 회원가입도 진행
     db.query(sql.kakao_check, [kakao.user_id], function (error, results, fields) {
         if (results.length <= 0) {
+            console.log(results.length);
             db.query(sql.kakaoJoin, [kakao.user_id, kakao.user_nick, kakao.user_id], function (error, result) {
                 if (error) {
                     console.error(error);
@@ -77,6 +78,7 @@ db.query(sql.get_user_no, [kakao.user_id], function (error, results, fields) {
 });
     })
 })
+
 
 // 네이버 로그인
 router.post('/naverlogin', function (request, response) {

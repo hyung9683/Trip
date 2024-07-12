@@ -94,16 +94,13 @@ export default {
 .like {
     position: relative;
     justify-content: center;
-    top: 150px;
-    left: 740px;
+    left: 760px;
     
 }
 
 table {
     margin: auto;
     position: relative;
-    top: 140px;
-    left: 30px;
     width: 80%;
     
     

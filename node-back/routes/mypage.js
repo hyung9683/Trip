@@ -30,13 +30,16 @@ const upload = multer({ storage: storage});
 
 router.post('/upload', upload.single('image'), (req, res) => {
   // 업로드 완료 후 처리 로직
-  console.log(res);
-  res.json({ filename: req.file.filename });
+  // console.log(res);
+  try {
+    
+    res.json({ filename: req.file.filename });
+  
+  } catch(error) {
+    console.error(error);
+  }
 
 });
-
-// /mypage 라우터 밑에 정적 파일 제공 설정
-// router.use('/images', express.static(path.join(__dirname, '..', uploadDirectory)));
 
 
 // 내 게시글 목록 불러오기
@@ -139,18 +142,6 @@ router.post('/getMyReview', (req, res) => {
     });
   });
 
-// 사용자 정보 조회
-// router.post('/:user_no', function (req, res) {
-//     const userno = req.params.user_no;
-//     db.query(sql.user_info, [userno], function(error, results, fields) {
-//         if(error) {
-//             return res.status(500).json({ error: '없는 사용자입니다'});
-//         }
-        
-//         return res.json(results);
-//     });
-// })
-// 사용자 정보 조회
 router.get('/:user_no', function (req, res) {
   const userno = req.params.user_no;
   console.log(userno);
@@ -165,7 +156,7 @@ router.get('/:user_no', function (req, res) {
 
 
 // 계정 삭제
-router.post('/delete/:user_no', function (req, res) {
+router.delete('/delete/:user_no', function (req, res) {
     const userno = req.params.user_no;
     db.query(sql.user_delete, [userno], function(error, results, fields) {
         if(error) {
@@ -174,6 +165,20 @@ router.post('/delete/:user_no', function (req, res) {
         console.log(results);
         return res.json(results);
     });
+});
+
+
+//카카오 탈퇴
+router.delete('/kakaoDelete', function(req, res) {
+  const kakao = req.body;
+
+  db.query(sql.kakao_delete, [kakao.user_no, kakao.user_id], function(error, results) {
+      if (error) {
+          console.error(error);
+          return res.status(500).json({ error: '삭제실패' });
+      }
+      return res.status(200).json({ message: '성공적으로 삭제되었습니다' });
+  });
 });
 
 // 사용자 정보 수정

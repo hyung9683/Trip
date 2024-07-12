@@ -13,8 +13,8 @@
                         data-bs-toggle="dropdown" aria-expanded="false" style="border: none;"> {{ sortCase }}
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <li><a class="dropdown-item" href="#" @click="sortList(0)">최근순</a></li>
-                        <li><a class="dropdown-item" href="#" @click="sortList(1)">오래된순</a></li>
+                        
+                        <li><a class="dropdown-item" href="#" @click="sortList(1)">전체</a></li>
                         <li><a class="dropdown-item" href="#" @click="sortList2(2)">여행지</a></li>
                         <li><a class="dropdown-item" href="#" @click="sortList3(3)">축제</a></li>
                     </ul>
@@ -73,7 +73,7 @@ export default {
             tvList: [],
             fsList: [],
             rowList: [],
-            sortCase: "최근 순",
+            sortCase: "전체",
             pageTvList: [],
             pageFsList: [],
             pageNum: 0,

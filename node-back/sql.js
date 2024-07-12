@@ -9,13 +9,14 @@ module.exports = {
   //카카오 로그인
   kakaoJoin: `INSERT INTO trip_user (user_id, user_nick, user_email, user_login_ty) VALUES(?,?,?,1)`,
   kakao_check: `SELECT * FROM trip_user WHERE user_id = ?`,
+  //카카오 삭제
+  kakao_delete: `delete from trip_user where user_login_ty = 1 and user_no = ?`,
   //네이버 로그인
   naverlogin: `INSERT INTO trip_user (user_email, user_id, user_nick, user_login_ty) VALUES (?, ?, ?, 2)`,
   naver_id_check: `SELECT * FROM trip_user WHERE user_id = ?`,
 
   // admin 기능 
 
-   admin_search: `SELECT * FROM trip_user`,
    admin_ck: `SELECT user_type FROM trip_user WHERE user_no = ?`,
    //마이페이지 좋아요 리스트 조회
    mylike: `SELECT
@@ -34,7 +35,7 @@ LEFT JOIN
 WHERE
    g.user_no = ?`,
 //사용자 정보 조회
-user_info: `SELECT user_no, user_id, user_nick, user_email, user_num, user_zipcode, user_adr1, user_adr2, user_login_ty
+user_info: `SELECT user_id, user_nick, user_email, user_num, user_zipcode, user_adr1, user_adr2, user_login_ty
 FROM trip_user
 WHERE user_no = ?`,
    // 사용자 정보 수정
@@ -142,7 +143,22 @@ ORDER BY total_good DESC;
   all_tv_list: `SELECT tv_no, tv_tit, tv_img, tv_local_nm
   FROM trip_tv_info`,
   all_fs_list: `SELECT fs_no, fs_tit, fs_img, fs_local_nm, fs_date
-  FROM trip_fs_info`
+  FROM trip_fs_info`,
 
+  //
+  trip_write: `INSERT INTO trip_tv_info (tv_tit, tv_ads, tv_content, tv_img, tv_sb_img, tv_sb_img2, tv_sb_img3, tv_sb_img4, tv_local_nm) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+  fs_write: `INSERT INTO trip_fs_info (fs_tit, fs_ads, fs_content, fs_img, fs_sb_img, fs_sb_img2, fs_sb_img3, fs_sb_img4, fs_local_nm) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+
+  liketrip: `SELECT 
+  t.tv_tit, 
+  g.total_good 
+FROM 
+  trip_tv_info t
+JOIN 
+  trip_good g ON t.tv_no = g.tv_no;`,
+
+// admin 기능 
+
+admin_search: `SELECT * FROM trip_user`,
 
 }
