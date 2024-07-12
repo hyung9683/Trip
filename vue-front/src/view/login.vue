@@ -42,6 +42,7 @@ export default {
     computed: {
         user() {
             return this.$store.state.user; // user 정보가 바뀔 때마다 자동으로 user() 갱신
+            
         },
     },
    mounted() {
