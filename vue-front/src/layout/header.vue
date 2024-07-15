@@ -19,17 +19,17 @@
           <li class="qna" @click="goToQna()">고객센터</li>
         </ul>
 
-        <ul v-if="this.user.user_id === ''&&this.user.user_no === ''" class="join">
+        <ul v-if="user.user_id == ''" class="join">
           <li @click="goToLogin">로그인</li>
           <li @click="goToJoin">회원가입</li>
         </ul>
 
-        <ul v-else-if="adminCk === 1" class="join">
+        <ul v-else-if="adminCk == 1" class="join">
           <li @click="goToAdmin">관리 페이지</li>
           <li @click="logout">로그아웃</li>
         </ul>
 
-        <ul v-else-if="adminCk === 0" class="join">
+        <ul v-else class="join">
           <li @click="logout">로그아웃</li>
         </ul>
 
@@ -56,7 +56,6 @@ export default {
     return {
       adminCk: 0,
       keyword: this.$route.query.keyword,
-      
     }
   },
   computed: {
@@ -66,13 +65,13 @@ export default {
       
     }
     
-  },
-  created() {
-  },
+  },  
   
   mounted() {
+    
     if (this.user.user_id == '') {
       // 일단은 로그인 여부 체크 
+      
     }
     else {
       axios({
@@ -162,6 +161,9 @@ watch: {
         this.$router.push({ path: '/login'})
       }
     },
+    goToBoard() {
+      this.$router.push({ path: '/board' });
+    },
     
     logout() {
       this.$store.commit("user", {});
@@ -173,15 +175,12 @@ watch: {
         timer: 1000
       })
         .then(() => {
-
-            window.location.href = "http://localhost:8080";
-
-        });
+          window.location.href = "http://localhost:8080";
+        })
     },
-
     goToHome() {
       window.location.href = "http://localhost:8080";
-    },
+    }
   }
 }
 

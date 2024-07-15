@@ -8,22 +8,22 @@
                 <p>내 정보</p>
             </router-link>
 
-            <router-link class="m" to="/mypage/likepage">
+            <router-link class="m" to="/mypage/likepage" active-class="active-link">
                 <i class="bi bi-hand-thumbs-up"></i>
                 <p >좋아요 목록</p>
             </router-link>
 
-            <router-link class="m" to="/mypage/contentpage">
+            <router-link class="m" to="/mypage/contentpage" active-class="active-link">
                 <i class="bi bi-list-task"></i>
                 <p>글 목록</p>
             </router-link>
 
-            <router-link class="m" to="/mypage/reviewpage">
+            <router-link class="m" to="/mypage/reviewpage" active-class="active-link">
                 <i class="bi bi-chat-right-text"></i>
                 <p>리뷰 목록</p>
             </router-link>
 
-            <router-link class="m" to="/mypage/qnapage">
+            <router-link class="m" to="/mypage/qnapage" active-class="active-link">
                 <i class="bi bi-question-square"></i>
                 <p>문의내역</p>
             </router-link>
@@ -49,12 +49,6 @@ export default {
     font-style: normal;
 }
 
-/* * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-} */
-
 .menu {
     background-color: #FFDC9F;
     height: 100%;
@@ -66,6 +60,39 @@ export default {
     top: 150px;
 }
 
+/* .menu .m, .menu p {
+    color: #DDC9BC;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    transition: background-color 0.3s ease;
+}
+
+.menu .m i {
+    margin-bottom: 5px;
+}
+
+.menu p {
+    margin: 0;
+    font-size: 14px;
+    color: #000000;
+}
+
+.menu .m:hover {
+    background-color: #8E7C68;
+}
+
+.active-link {
+
+    background-color: #ffffff;
+    color: #000000;
+} */
+
+
+
 .menu .m , .icon-bar p{
     color: #DDC9BC;
 }
@@ -74,27 +101,23 @@ export default {
     display: none;
 }
 
-.menu a {
-    display: flex;
+.menu .m {
+    display: block;
     text-align: center;
-    /* height: 60px;
+    height: 60px;
     padding-top: 18px;
-    padding-bottom: 18px; */
-    padding: 18px 0;
+    padding-bottom: 18px;
     transition: all 0.3s ease;
     text-decoration: none;
-    /* top: 100px; */
+    top: 100px;
 }
 
 .menu p {
-    display: flex;
-    margin: 0;
+    margin: auto;
     font-size: 14px;
     color: #000000;
-    padding-top: 8px;
-    height: 16px;
-    line-height: 16px;
-    /* top: 100px; */
+    padding-top: 4px;
+    top: 100px;
 }
 
 .menu .m:hover {
@@ -102,14 +125,15 @@ export default {
 }
 
 
-.menu .m:active {
+.menu .m:focus {
+
     background-color: #ffffff;
+    box-shadow: 0 0.4px 4px rgb(209, 116, 95)C;
 }
 
 .bi {
     color: black;
 }
-
 /* .m {
     justify-content: center;
     text-align: center;
@@ -124,26 +148,5 @@ export default {
     top: 150px;
     
 } */
-
-.menu .m {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    height: 80px; 
-    padding: 0; 
-    transition: background-color 0.3s ease;
-    text-decoration: none;
-}
-
-.menu .m i {
-    padding-top: 20px;
-}
-
-router-link {
-    display: flex;
-    height: auto;
-}
 
 </style>

@@ -90,27 +90,21 @@ export default {
     font-family: 'GmarketSansMedium';
 }
 
+.container {
+    padding-top: 20px; /* 컨테이너 상단에 패딩 추가 */
+}
 
 .like {
-    position: relative;
-    justify-content: center;
-    left: 760px;
-    
+    text-align: center;
+    margin-top: 0; /* 상단 여백 제거 */
 }
 
 table {
     margin: auto;
-    position: relative;
     width: 80%;
-    
-    
 }
 
-.category {
-    text-align: center;
-}
-
-.title {
+.category, .title, .date {
     text-align: center;
 }
 
@@ -118,14 +112,9 @@ table {
     padding: 5px;
 }
 
-.date {
-    text-align: center;
-}
-
 tbody {
     background-color: #e2e1e0;
 }
-
 
 .like-list th {
     border-top: 1px solid #888;
@@ -138,14 +127,8 @@ tbody {
     height: 100%;
 }
 
-
-
 .like_title {
-    position: relative;
     text-align: center;
     white-space: nowrap;
-    
 }
-
-
 </style>

@@ -32,6 +32,24 @@
                 <input type="text" v-model="Fs.FsLocalNm" class="large-input" placeholder="지역을 입력해주세요">
               </td>
             </tr>
+            <tr>
+              <th>가격</th>
+              <td class="left-align">
+                <input type="text" v-model="Fs.FsPrice" class="large-input" placeholder="지역을 입력해주세요">
+              </td>
+            </tr>
+            <tr>
+              <th>기간</th>
+              <td class="left-align">
+                <input type="text" v-model="Fs.FsDate" class="large-input" placeholder="기간을 입력해주세요">
+              </td>
+            </tr>
+            <tr>
+              <th>지역 아이디</th>
+              <td class="left-align">
+                <input type="text" v-model="Fs.FsId" class="large-input" placeholder="지역 아이디를 입력해주세요">
+              </td>
+            </tr>
           </table>
   
           <div class="upload-section">
@@ -90,6 +108,9 @@
           FsAddress: '',
           FsContent: '',
           FsLocalNm: '',
+          FsPrice: '',
+          FsDate: '',
+          FsId: '',
           FsImg: '',
           FsSubImg: [],
         },
@@ -133,6 +154,9 @@
       fs_ads: this.Fs.FsAddress,
       fs_content: this.Fs.FsContent,
       fs_local_nm: this.Fs.FsLocalNm,
+      fs_price: this.Fs.FsPrice,
+      fs_date: this.Fs.FsDate,
+      fs_id: this.Fs.FsId,
       fs_img: this.Fs.FsImg.name,
       fs_sb_img: FsSubImages[0],
       fs_sb_img2: FsSubImages[1],
@@ -152,6 +176,9 @@
         this.Fs.FsAddress = '';
         this.Fs.FsContent = '';
         this.Fs.FsLocalNm = '';
+        this.Fs.FsPrice = '';
+        this.Fs.FsDate = '';
+        this.Fs.FsId = '';
         this.Fs.FsImg = '';
         this.Fs.FsSubImg = [];
         this.mainImageUrl = '';

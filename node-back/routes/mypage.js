@@ -73,6 +73,21 @@ router.post('/getMyReview', (req, res) => {
       return res.status(200).json(results[0].count);
     });
   });
+
+// 게시글 삭제 라우트
+router.post('/reviewdelete', (req, res) => {
+  const { reviewno } = req.body;
+  console.log('Received review_no:', reviewno); // review_no 값 로그 출력
+
+  db.query(sql.deletereview, [reviewno], (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Database error' });
+    }
+    console.log('Delete Result:', result); // 쿼리 결과 로그 출력
+    res.json(result);
+  });
+});
   
   // qna목록 불러오기
   router.post('/myqna_list', (req, res) => {
@@ -142,6 +157,18 @@ router.post('/getMyReview', (req, res) => {
     });
   });
 
+// 사용자 정보 조회
+// router.post('/:user_no', function (req, res) {
+//     const userno = req.params.user_no;
+//     db.query(sql.user_info, [userno], function(error, results, fields) {
+//         if(error) {
+//             return res.status(500).json({ error: '없는 사용자입니다'});
+//         }
+        
+//         return res.json(results);
+//     });
+// })
+// 사용자 정보 조회
 router.get('/:user_no', function (req, res) {
   const userno = req.params.user_no;
   console.log(userno);
@@ -156,30 +183,40 @@ router.get('/:user_no', function (req, res) {
 
 
 // 계정 삭제
-router.delete('/delete/:user_no', function (req, res) {
-    const userno = req.params.user_no;
-    db.query(sql.user_delete, [userno], function(error, results, fields) {
-        if(error) {
-            return res.status(500).json({ error: '삭제 실패' });
-        }
-        console.log(results);
-        return res.json(results);
-    });
-});
+// router.delete('/delete/:user_no', function (req, res) {
+//   const userno = req.params.user_no;
+//   db.query(sql.user_delete, [userno], function(error, results, fields) {
+//       if(error) {
+//           return res.status(500).json({ error: '삭제 실패' });
+//       }
+//       console.log(results);
+//       return res.json(results);
+//   });
+// });
 
-
-//카카오 탈퇴
-router.delete('/kakaoDelete', function(req, res) {
-  const kakao = req.body;
-
-  db.query(sql.kakao_delete, [kakao.user_no, kakao.user_id], function(error, results) {
-      if (error) {
-          console.error(error);
-          return res.status(500).json({ error: '삭제실패' });
+router.post('/delete/:user_no', async (req, res) => {
+  const userno = req.params.user_no;
+  await db.query(sql.soft_Dele, [userno], function(error, results, fields) {
+      if(error) {
+          return res.status(500).json({ error: '삭제 실패' });
       }
-      return res.status(200).json({ message: '성공적으로 삭제되었습니다' });
+      console.log(results);
+      return res.json(results);
   });
 });
+
+//카카오 탈퇴
+// router.delete('/kakaoDelete', function(req, res) {
+// const kakao = req.body;
+
+// db.query(sql.kakao_delete, [kakao.user_no, kakao.user_id], function(error, results) {
+//     if (error) {
+//         console.error(error);
+//         return res.status(500).json({ error: '삭제실패' });
+//     }
+//     return res.status(200).json({ message: '성공적으로 삭제되었습니다' });
+// });
+// });
 
 // 사용자 정보 수정
 router.post('/mypageupdate', function (req, res) {

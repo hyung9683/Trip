@@ -139,9 +139,9 @@ router.post('/upload', upload.single('upload'), function(request, response) {
 
 // 게시글 작성
 router.post('/tripwrite', function (req, res) {
-  const { tv_tit, tv_ads, tv_content, tv_img, tv_sb_img, tv_sb_img2, tv_sb_img3, tv_sb_img4, tv_local_nm } = req.body;
+  const { tv_tit, tv_ads, tv_content, tv_img, tv_sb_img, tv_sb_img2, tv_sb_img3, tv_sb_img4, tv_local_nm, tv_id, tv_category } = req.body;
 
-  db.query(sql.trip_write, [tv_tit, tv_ads, tv_content, tv_img, tv_sb_img, tv_sb_img2, tv_sb_img3, tv_sb_img4, tv_local_nm], function (error, result) {
+  db.query(sql.trip_write, [tv_tit, tv_ads, tv_content, tv_img, tv_sb_img, tv_sb_img2, tv_sb_img3, tv_sb_img4, tv_local_nm, tv_id, tv_category], function (error, result) {
     if (error) {
       console.error('글 작성 에러:', error);
       return res.status(500).json({ error: '글 작성 중 오류가 발생했습니다.' });
@@ -154,9 +154,9 @@ router.post('/tripwrite', function (req, res) {
 
 // 게시글 작성
 router.post('/fswrite', function (req, res) {
-  const { fs_tit, fs_ads, fs_content, fs_img, fs_sb_img, fs_sb_img2, fs_sb_img3, fs_sb_img4, fs_local_nm } = req.body;
+  const { fs_tit, fs_ads, fs_content, fs_img, fs_sb_img, fs_sb_img2, fs_sb_img3, fs_sb_img4, fs_local_nm, fs_price, fs_date, fs_id, fs_category } = req.body;
 
-  db.query(sql.fs_write, [fs_tit, fs_ads, fs_content, fs_img, fs_sb_img, fs_sb_img2, fs_sb_img3, fs_sb_img4, fs_local_nm], function (error, result) {
+  db.query(sql.fs_write, [fs_tit, fs_ads, fs_content, fs_img, fs_sb_img, fs_sb_img2, fs_sb_img3, fs_sb_img4, fs_local_nm, fs_price, fs_date, fs_id, fs_category], function (error, result) {
     if (error) {
       console.error('글 작성 에러:', error);
       return res.status(500).json({ error: '글 작성 중 오류가 발생했습니다.' });
@@ -248,6 +248,28 @@ router.post('/liketrip', function (req, res) {
       })
 })
 
+router.post('/viewcount', function (req, res) {
+
+  db.query(sql.viewcount, function (error, results, fields) {
+      if (error) {
+          console.error(error);
+      }
+      console.log(results);
+      return res.json(results);
+  })
+})
+
+router.post('/likefs', function (req, res) {
+
+  db.query(sql.likefs, function (error, results, fields) {
+      if (error) {
+          console.error(error);
+      }
+      console.log(results);
+      return res.json(results);
+  })
+})
+
 //admin 계정을 제외한 모든 사용자 정보 가져오기
 router.get('/userinfo', function (req, res) {
   db.query(sql.admin_search, function(error, results, fields) {
@@ -263,6 +285,83 @@ router.get('/userinfo', function (req, res) {
       return res.json(results);
   });
 })
+
+//여행지 삭제
+router.post('/tv/delete', function (request, response, next) {
+  const tvno = request.body.tv_no; // Array of tv_no
+
+  if (!Array.isArray(tvno)) {
+    return response.status(400).json({ error: 'Invalid input' });
+  }
+
+  db.query(sql.tv_list_delete, [tvno], function (error, results, fields) {
+    if (error) {
+      console.error(error);
+      return response.status(500).json({ error: 'delete_error' });
+    }
+    response.json(results);
+  });
+});
+
+//축제 삭제
+router.post('/fs/delete', function (request, response, next) {
+  const fsno = request.body.fs_no; // Array of fs_no
+
+  if (!Array.isArray(fsno)) {
+    return response.status(400).json({ error: 'Invalid input' });
+  }
+
+  db.query(sql.fs_list_delete, [fsno], function (error, results, fields) {
+    if (error) {
+      console.error(error);
+      return response.status(500).json({ error: 'delete_error' });
+    }
+    response.json(results);
+  });
+});
+
+ // 내 게시글 목록 불러오기
+ router.post('/board_list', (req, res) => {
+  const { page, limit } = req.body;
+  
+  // 기본값 설정
+  let pageNum = parseInt(page, 10) || 1;
+  let limitNum = parseInt(limit, 10) || 10;
+  const offset = (pageNum - 1) * limitNum;
+
+  db.query(sql.adminboard, [limitNum, offset], function (error, result) {
+    if (error) {
+      console.error(error);
+      return res.status(500).json({ error: 'error' });
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+// 내 게시글 갯수 불러오기
+router.post('/board_count', (req, res) => {
+
+  db.query(sql.boardcnt, (error, results, fields) => {
+    if (error) {
+      console.error(error);
+      return res.status(500).json({ error: '에러' });
+    }
+    return res.status(200).json(results[0].count);
+  });
+});
+
+// 게시글 삭제
+router.post('/boarddelete', (req, res) => {
+  const { boardno } = req.body;
+  db.query(sql.deleteboard, [boardno], (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Database error' });
+    }
+    res.json(result);
+  });
+});
 
 // 계정 삭제
 router.delete('/delete', function (req, res) {

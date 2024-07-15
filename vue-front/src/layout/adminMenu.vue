@@ -22,7 +22,11 @@
             <router-link to="/admin/qna?page=1">
                 <i class="fa fa-question"></i>
                 <p>고객센터 답변</p>
-            </router-link>    
+            </router-link>
+            <router-link to="/admin/test">
+                <i class="fa fa-question"></i>
+                <p>테스트 용</p>
+            </router-link>     
         </div>
     </div>
 </template>

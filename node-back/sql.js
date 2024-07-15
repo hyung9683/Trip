@@ -9,7 +9,6 @@ module.exports = {
   //카카오 로그인
   kakaoJoin: `INSERT INTO trip_user (user_id, user_nick, user_email, user_login_ty) VALUES(?,?,?,1)`,
   kakao_check: `SELECT * FROM trip_user WHERE user_id = ?`,
-  //카카오 삭제
   kakao_delete: `delete from trip_user where user_login_ty = 1 and user_no = ?`,
   //네이버 로그인
   naverlogin: `INSERT INTO trip_user (user_email, user_id, user_nick, user_login_ty) VALUES (?, ?, ?, 2)`,
@@ -43,6 +42,7 @@ WHERE user_no = ?`,
   where user_no = ?`,
     //계정 삭제
   user_delete: `delete from trip_user where user_no = ?`,
+  soft_Dele: `update trip_user set deleted_at = now() where user_no = ?`,
   //pass
   pass_info: `select user_passwd from trip_user where user_no = ?`,
   pass_update: 'UPDATE trip_user SET user_passwd = ? WHERE user_no = ?', 
@@ -107,7 +107,7 @@ ORDER BY total_good DESC;
   review_detail2: `SELECT fs_tit, fs_ads, fs_content, fs_img, fs_sb_img, fs_sb_img2, fs_sb_img3, fs_sb_img4 FROM trip_fs_info WHERE fs_no = ?;`,  //여행지, 축제 정보 가져오기
   get_review2: `SELECT * FROM trip_review WHERE fs_no = ?;`, //등록된 리뷰
 
-  get_my_review: `SELECT review_cate, COALESCE(t.tv_img, f.fs_img) AS image, review_goat, review_content, COALESCE(t.tv_no, f.fs_no) as number
+  get_my_review: `SELECT review_cate, COALESCE(t.tv_img, f.fs_img) AS image, review_goat, review_content, COALESCE(t.tv_no, f.fs_no) as number, review_no
                 FROM trip_review AS r
                 LEFT JOIN trip_tv_info AS t ON r.review_cate = 1 AND r.tv_no = t.tv_no
                 LEFT JOIN trip_fs_info AS f ON r.review_cate = 2 AND r.fs_no = f.fs_no
@@ -121,6 +121,7 @@ ORDER BY total_good DESC;
 
   myboard: `select * from trip_board join trip_user 
         where trip_board.user_no=trip_user.user_no and trip_board.user_no = ? ORDER BY board_no DESC LIMIT ? OFFSET ?;`,
+  deletereview: 'DELETE FROM trip_review WHERE review_no = ?',
  // 상세페이지 좋아요
         like_insert: `INSERT INTO trip_good (user_no, tv_no, good_cate) VALUES (?, ?, 1)`,
         like_delete: `DELETE FROM trip_good WHERE user_no = ? AND tv_no = ?`,
@@ -144,21 +145,59 @@ ORDER BY total_good DESC;
   FROM trip_tv_info`,
   all_fs_list: `SELECT fs_no, fs_tit, fs_img, fs_local_nm, fs_date
   FROM trip_fs_info`,
+  tv_list_delete: `DELETE FROM trip_tv_info WHERE tv_no IN (?)`,
+  fs_list_delete: `DELETE FROM trip_fs_info WHERE fs_no IN (?)`,
 
   //
-  trip_write: `INSERT INTO trip_tv_info (tv_tit, tv_ads, tv_content, tv_img, tv_sb_img, tv_sb_img2, tv_sb_img3, tv_sb_img4, tv_local_nm) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);`,
-  fs_write: `INSERT INTO trip_fs_info (fs_tit, fs_ads, fs_content, fs_img, fs_sb_img, fs_sb_img2, fs_sb_img3, fs_sb_img4, fs_local_nm) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+  trip_write: `INSERT INTO trip_tv_info (tv_tit, tv_ads, tv_content, tv_img, tv_sb_img, tv_sb_img2, tv_sb_img3, tv_sb_img4, tv_local_nm, tv_id, tv_category) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1);`,
+  fs_write: `INSERT INTO trip_fs_info (fs_tit, fs_ads, fs_content, fs_img, fs_sb_img, fs_sb_img2, fs_sb_img3, fs_sb_img4, fs_local_nm, fs_price, fs_date, fs_id, fs_category) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 2);`,
 
   liketrip: `SELECT 
   t.tv_tit, 
-  g.total_good 
+  IFNULL(g.total_good, 0) AS total_good
 FROM 
   trip_tv_info t
-JOIN 
-  trip_good g ON t.tv_no = g.tv_no;`,
+LEFT JOIN (
+  SELECT tv_no, COUNT(*) AS total_good
+  FROM trip_good
+  GROUP BY tv_no
+) g ON t.tv_no = g.tv_no;`,
+
+likefs: `SELECT 
+  f.fs_tit, 
+  IFNULL(g.total_good, 0) AS total_good
+FROM 
+  trip_fs_info f
+LEFT JOIN (
+  SELECT fs_no, COUNT(*) AS total_good
+  FROM trip_good
+  GROUP BY fs_no
+) g ON f.fs_no = g.fs_no;`,
+
+viewcount: `SELECT board_tit, board_view
+          FROM trip_board;`,
 
 // admin 기능 
 
 admin_search: `SELECT * FROM trip_user`,
 
+    //게시판 기능
+    board_write: `INSERT INTO trip_board(board_tit, board_content,user_no, board_img) VALUES(?, ?, ?, ?);`,
+    show_board: `select * from trip_board join trip_user 
+          where trip_board.user_no=trip_user.user_no and trip_board.user_no ORDER BY board_no DESC LIMIT ? OFFSET ?;`,
+    board_cnt: `SELECT COUNT(*) FROM trip_board`,
+    board_search: `SELECT * FROM trip_board WHERE board_tit LIKE ? ORDER BY board_no DESC LIMIT ? OFFSET ?`,
+    board_admin: `SELECT * FROM trip_board JOIN trip_user WHERE trip_board.user_no = trip_user.user_no`, //1
+    board_Detail: `SELECT * FROM trip_board JOIN trip_user WHERE trip_board.user_no=trip_user.user_no AND board_no = ?; `, //게시글 상세
+    board_delete: `DELETE FROM trip_board WHERE board_no = ?`,
+    board_Edit: `UPDATE trip_board SET board_content = ?, board_tit = ? WHERE board_no = ?;`,
+    comment_list: `SELECT comment_id, comment_content, parent_comment_id, comment_at, user_no, board_no FROM board_comments WHERE board_no = ?`,
+    comment_write: `INSERT INTO board_comments(user_no, comment_content) VALUES(?, ?)`,
+
+    boardcnt: `SELECT COUNT(*) FROM trip_board`,
+
+    adminboard: `select * from trip_board join trip_user 
+          where trip_board.user_no=trip_user.user_no and trip_board.user_no ORDER BY board_no DESC LIMIT ? OFFSET ?;`,
+    deleteboard: `DELETE FROM trip_board WHERE board_no = ?`,
+    
 }

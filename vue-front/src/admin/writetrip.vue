@@ -32,6 +32,12 @@
                 <input type="text" v-model="Tvs.TvLocalNm" class="large-input" placeholder="지역을 입력해주세요">
               </td>
             </tr>
+            <tr>
+              <th>지역 아이디</th>
+              <td class="left-align">
+                <input type="text" v-model="Tvs.TvId" class="large-input" placeholder="카테고리를 입력해주세요">
+              </td>
+            </tr>
           </table>
   
           <div class="upload-section">
@@ -90,6 +96,7 @@
           TvAddress: '',
           TvContent: '',
           TvLocalNm: '',
+          TvId: '',
           TvImg: '',
           TvSubImg: [],
         },
@@ -133,6 +140,7 @@
       tv_ads: this.Tvs.TvAddress,
       tv_content: this.Tvs.TvContent,
       tv_local_nm: this.Tvs.TvLocalNm,
+      tv_id: this.Tvs.TvId,
       tv_img: this.Tvs.TvImg.name,
       tv_sb_img: tvSubImages[0],
       tv_sb_img2: tvSubImages[1],
@@ -152,6 +160,7 @@
         this.Tvs.TvAddress = '';
         this.Tvs.TvContent = '';
         this.Tvs.TvLocalNm = '';
+        this.Tvs.TvId = '';
         this.Tvs.TvImg = '';
         this.Tvs.TvSubImg = [];
         this.mainImageUrl = '';

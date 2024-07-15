@@ -18,6 +18,7 @@
           <col width="20%" />
           <col width="15%" />
           <col width="*" />
+          <col width="10%" />
         </colgroup>
         <thead>
           <tr>
@@ -25,6 +26,7 @@
             <th>이미지</th>
             <th>별점</th>
             <th>내용</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -41,6 +43,7 @@
               </div>
             </td>
             <td class="review-text" @click="goToDetail(review)">{{ review.review_content }}</td>
+            <td><button class="del_btn" @click="confirmDeleteContent(review.review_no)">삭제</button></td>
           </tr>
         </tbody>
       </table>
@@ -84,11 +87,11 @@ export default {
       return review_cate === 1 ? '여행지' : (review_cate === 2 ? '축제' : '');
     },
     goToDetail(review) {
-            const url = this.getCategoryLabel(review.review_cate) === '여행지' ?
-                `http://localhost:8080/tvdetail/${review.number}` :
-                `http://localhost:8080/fsdetail/${review.number}`;
-            window.location.href = url;
-        },
+      const url = this.getCategoryLabel(review.review_cate) === '여행지'
+        ? `http://localhost:8080/tvdetail/${review.number}`
+        : `http://localhost:8080/fsdetail/${review.number}`;
+      window.location.href = url;
+    },
     getImageUrl(review) {
       return review.image ? require(`../../../node-back/uploads/${review.image}`) : require('/goodsempty.jpg');
     },
@@ -117,6 +120,34 @@ export default {
         },
       }).then(res => {
         this.cnt = res.data;
+      }).catch(err => {
+        alert(err);
+      });
+    },
+    confirmDeleteContent(review_no) {
+      this.$swal({
+        title: '게시글을 삭제하시겠습니까?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: '삭제',
+        cancelButtonText: '취소',
+        reverseButtons: true
+      }).then(result => {
+        if (result.value) {
+          this.deleteContent(review_no);
+        }
+      });
+    },
+    deleteContent(review_no) {
+      axios({
+        url: "http://localhost:3000/mypage/reviewdelete",
+        method: "POST",
+        data: {
+          reviewno: review_no,
+        },
+      }).then(res => {
+        console.log(res.data); // 서버 응답 로그 출력
+        this.getReviews(); // 리뷰 목록 새로고침
       }).catch(err => {
         alert(err);
       });
@@ -209,5 +240,20 @@ export default {
 .page-count {
   padding: 0 15px 0 20px;
   /* 위 오 아래 왼 간격 조절 */
+}
+.del_btn{
+    height: 23px;
+  width: 50px;
+  border: none;
+  background-color: #aeaeae;
+  font-family: 'GmarketSansMedium';
+  font-size: 14px;
+ 
+  
+}
+button.del_btn:hover {
+  cursor: pointer;
+  background-color:rgb(161, 161, 161);
+
 }
 </style>

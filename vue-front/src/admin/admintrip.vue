@@ -8,6 +8,7 @@
         <div class="buttons justify-content-end"> <!-- 오른쪽 정렬 -->
           <button class="write_btn" @click="write_trip">여행지 추가</button>
           <button class="write_btn" @click="write_fs">축제 추가</button>
+          <button class="write_btn" @click="toggleDeleteMode">삭제</button> <!-- 삭제 버튼 -->
           <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="border: none;"> {{ sortCase }}
             </button>
@@ -29,6 +30,9 @@
           <a class="imgSpace" :href="'http://localhost:8080/' + (item.tv_no ? 'tvdetail/' + item.tv_no : 'fsdetail/' + item.fs_no)">
             <img :width="230" :src="item.tv_img ? require(`../../../node-back/uploads/${item.tv_img}`) : (item.fs_img ? require(`../../../node-back/uploads/${item.fs_img}`) : '/empty.jpg')" alt="이미지" />
           </a>
+          <div v-if="deleteMode" class="form-check">
+            <input class="form-check-input" type="checkbox" :value="item.tv_no || item.fs_no" v-model="selectedItems">
+          </div>
           <div class="card-body" style="padding: 1px;">
             <p class="card-text align-left" style="font-size: 15px" @click="goToDetail(item.tv_no ? item.tv_no : item.fs_no)"> 
               {{ item.tv_tit || item.fs_tit }}
@@ -72,6 +76,8 @@ export default {
       pageNum: 0,
       pageCnt: 0,
       onePageCnt: 12,
+      deleteMode: false, // 삭제 모드 활성화 상태
+      selectedItems: [] // 선택된 항목 리스트
     };
   },
   created() {
@@ -84,6 +90,12 @@ export default {
     },
     write_fs() {
       this.$router.push({ path: '/admin/writefs' });
+    },
+    toggleDeleteMode() {
+      if (this.deleteMode) {
+        this.deleteSelectedItems();
+      }
+      this.deleteMode = !this.deleteMode;
     },
     setPage(page) {
       this.pageTvList = [];
@@ -163,6 +175,25 @@ export default {
         }
       });
     },
+    async deleteSelectedItems() {
+  try {
+    const deleteTvItems = this.selectedItems.filter(item => this.tvList.some(tv => tv.tv_no === item));
+    const deleteFsItems = this.selectedItems.filter(item => this.fsList.some(fs => fs.fs_no === item));
+
+    if (deleteTvItems.length > 0) {
+      await axios.post('http://localhost:3000/admin/tv/delete', { tv_no: deleteTvItems });
+    }
+
+    if (deleteFsItems.length > 0) {
+      await axios.post('http://localhost:3000/admin/fs/delete', { fs_no: deleteFsItems });
+    }
+
+    this.getTvList(0);
+    this.getFsList(0);
+  } catch (error) {
+    console.error(error);
+  }
+}
   },
   watch: {
     '$route'() {

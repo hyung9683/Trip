@@ -22,7 +22,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in contentlist" :key="item.board_no">
+        <tr v-for="item in contentlist" :key="item.board_no"
+          @click="handleBoardClick(item.board_no)">
           <td>{{ item.board_no }}</td>
           <td>
             <img v-if="!item.board_img" src="../assets/img_notReady.png" alt="..." width="50%">
@@ -119,6 +120,22 @@ export default {
     },
     write_board() {
       this.$router.push({ path: '/boardwrite' });
+    },
+    // 게시글 상세 페이지로 이동
+    handleBoardClick(board_no) {
+      // 게시글 조회수 증가 요청
+      axios
+        .post("http://localhost:3000/bd/incrementBoardView", { board_no })
+        .then(() => {
+          // 조회수 증가 후 상세 페이지로 이동
+          this.$router.push({
+            path: `/board/boardDetail`,
+            query: { board_no },
+          });
+        })
+        .catch((err) => {
+          console.error("게시글 조회수 증가 중 오류:", err);
+        });
     },
     login() {
       this.$swal({

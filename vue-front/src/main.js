@@ -5,9 +5,6 @@ import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import Vuetify from 'vuetify'
 import store from './store'
-// import mitt from 'mitt'
-
-// const emitter = mitt();
 
 import defaultLayout from './layout/defaultLayout.vue'
 import MainPage from './view/main'
@@ -28,14 +25,19 @@ import fsDetail from './view/fsdetail.vue'
 import tvDetail from './view/tvdetail.vue'
 import All from './view/all.vue'
 
+import BoardPage from './view/board.vue'
+import WritePage from './view/write.vue'
+import BoardDetail from './view/boardDetail.vue'
 
 import Qna from './admin/qna.vue'
 import QnaAns from './admin/qnaAns.vue'
 import QnaContent from './admin/qnaContent.vue'
 import UserInfo  from './admin/userinfo.vue'
 import AdminTrip  from './admin/admintrip.vue'
+import Test  from './admin/test.vue'
 import WriteFs  from './admin/writefs.vue'
 import WriteTrip  from './admin/writetrip.vue'
+import Board  from './admin/board.vue'
 
 import AdminLayout from './layout/adminLayout.vue'
 
@@ -107,6 +109,18 @@ const routes = [
             path: '/all',
             component: All,
         },
+        {
+            path: '/board',
+            component: BoardPage,
+        },
+        {
+            path: '/board/boardwrite',
+            component: WritePage,
+        },
+        {
+            path:'/board/boardDetail',
+            component: BoardDetail,
+        }
     ]},
     {
         path: '/admin/',
@@ -133,6 +147,10 @@ const routes = [
                 component:AdminTrip
             },
             {
+                path:'test',
+                component:Test
+            },
+            {
                 path:'writefs',
                 component:WriteFs
             },
@@ -140,7 +158,10 @@ const routes = [
                 path:'writetrip',
                 component:WriteTrip
             },
-            
+            {
+                path:'board',
+                component:Board
+            },
         ]
     },
     {
@@ -193,5 +214,4 @@ app.use(router);
 app.use(store);
 app.use(VueSweetalert2);
 app.use(Vuetify);
-// app.config.globalProperties.emitter = emitter;
 app.mount('#app')
