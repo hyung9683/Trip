@@ -104,6 +104,7 @@ export default {
         .post("http://localhost:3000/bd/boardcnt")
         .then((res) => {
           this.cnt = res.data;
+          console.log(this.cnt);
         })
         .catch((err) => {
           alert("게시글 수를 가져오는 중 오류가 발생했습니다.");
@@ -162,10 +163,20 @@ export default {
       this.$router.push({ path: this.$route.path, query: { page: this.currentPage } });
       this.fetchContent(); // 페이지 업데이트 시 게시글 다시 가져오기
     },
-    // 검색어로 게시글 필터링
     submitSearch() {
-      // 검색어에 따라 서버에서 필터링 로직을 추가할 수 있습니다.
-    },
+      axios.post("http://localhost:3000/bd/contentsearch", {
+        searchboard: this.searchboard,
+        page: this.currentPage,
+        pageSize: this.pageSize,
+      })
+      .then((res) => {
+        this.contentlist = res.data;
+      })
+      .catch((err) => {
+        alert("게시글 검색 중 오류가 발생했습니다.");
+        console.error(err);
+      });
+    }
   },
 };
 </script>
