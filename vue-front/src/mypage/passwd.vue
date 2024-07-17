@@ -88,8 +88,9 @@ export default {
                         console.log("비밀번호:", response.data);
                         this.$swal("비밀번호가 틀립니다.");
                     } else {
-                        this.$swal("알 수 없는 오류가 발생했습ㅂ니다.")
+                        this.$swal("알 수 없는 오류가 발생했습니다.")
                     }
+                    console.log(response.data);
             }} catch(err) {
                 console.log(err);
                 this.$swal("수정에 실패했습니다.")

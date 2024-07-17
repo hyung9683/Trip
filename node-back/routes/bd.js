@@ -53,6 +53,7 @@ router.post('/boardcontent', (req, res) => {
   });
 })
 
+//댓글 작성
 router.post('/comment_write', function (req, res) {
   const { board_no, user_no, comment_content, parent_comment_id } = req.body;
   
@@ -71,6 +72,7 @@ router.post('/comment_write', function (req, res) {
   });
 });
 
+//댓글 리스트
 router.post('/comment_list', (req, res) => {
   const board_no = req.body.board_no;
 
@@ -165,6 +167,24 @@ router.post('/incrementBoardView', (req, res) => {
     } else {
       res.status(200).json({ message: 'Board view incremented successfully' });
     }
+  });
+});
+
+//검색
+router.post('/contentsearch', function (request, response, next) {
+  const searchboard = '%' + request.body.searchboard + '%';
+  const page = request.body;
+  // const sortCase = request.body.sortCase;
+
+  // const order = sortCaseReplace(sortCase);
+  
+
+  db.query(sql.board_search, [searchboard, page.pageSize, page.page], function (error, results, fields) {
+      if (error) {
+          console.error(error);
+          return response.status(500).json({ error: 'search_error' });
+      }
+      response.json(results);
   });
 });
 

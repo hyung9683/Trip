@@ -240,20 +240,21 @@ router.post('/passupdate', function(req, res) {
                 return res.status.json({ message: '에러'});
             }
         } else {
-            const same = bcrypt.compareSync(pass.user_pw, results[0].user_pw);
-
+          //데이터베이스에 있는 비밀번호를 복호화 시켜서 요청 값으로 가져온 pass.user_pw와 같은지 확인
+            const same = bcrypt.compareSync(pass.user_pw, results[0].user_passwd);
             if (!same) { // 비밀번호 틀릴 시
                 return res.status(200).json({ message: 'pw_ck' });
             }
 
-            const encryptedNewPw = bcrypt.hashSync(pass.user_npw, 10);
+            const encryptedNewPW = bcrypt.hashSync(pass.user_npw, 10);
 
             db.query(sql.pass_update, [encryptedNewPW, pass.user_no], function (error, results, fields) {
                 if(error) {
+                  console.log(results);
                     return res.status(500).json({ message: '에러' });
                 }
-
-                return res.status(200).json({ message: '비밀번호 수정 완료'});
+                console.log(results);
+                return res.status(200).json({ message: 'success'});
             });
         }
     });
