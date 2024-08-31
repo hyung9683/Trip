@@ -183,20 +183,9 @@ router.get('/:user_no', function (req, res) {
 
 
 // 계정 삭제
-// router.delete('/delete/:user_no', function (req, res) {
-//   const userno = req.params.user_no;
-//   db.query(sql.user_delete, [userno], function(error, results, fields) {
-//       if(error) {
-//           return res.status(500).json({ error: '삭제 실패' });
-//       }
-//       console.log(results);
-//       return res.json(results);
-//   });
-// });
-
-router.post('/delete/:user_no', async (req, res) => {
+router.delete('/delete/:user_no', function (req, res) {
   const userno = req.params.user_no;
-  await db.query(sql.soft_Dele, [userno], function(error, results, fields) {
+  db.query(sql.user_delete, [userno], function(error, results, fields) {
       if(error) {
           return res.status(500).json({ error: '삭제 실패' });
       }
@@ -206,17 +195,17 @@ router.post('/delete/:user_no', async (req, res) => {
 });
 
 //카카오 탈퇴
-// router.delete('/kakaoDelete', function(req, res) {
-// const kakao = req.body;
+router.delete('/kakaoDelete', function(req, res) {
+const kakao = req.body;
 
-// db.query(sql.kakao_delete, [kakao.user_no, kakao.user_id], function(error, results) {
-//     if (error) {
-//         console.error(error);
-//         return res.status(500).json({ error: '삭제실패' });
-//     }
-//     return res.status(200).json({ message: '성공적으로 삭제되었습니다' });
-// });
-// });
+db.query(sql.kakao_delete, [kakao.user_no, kakao.user_id], function(error, results) {
+    if (error) {
+        console.error(error);
+        return res.status(500).json({ error: '삭제실패' });
+    }
+    return res.status(200).json({ message: '성공적으로 삭제되었습니다' });
+});
+});
 
 // 사용자 정보 수정
 router.post('/mypageupdate', function (req, res) {
@@ -232,32 +221,31 @@ router.post('/mypageupdate', function (req, res) {
 
 //사용자 비밀번호 변경
 router.post('/passupdate', function(req, res) {
-    const pass = req.body;
+  const pass = req.body;
 
-    db.query(sql.pass_info, [pass.user_no], function (error, results, fields) {
-        if (results.length <= 0) {
-            if (error) {
-                return res.status.json({ message: '에러'});
-            }
-        } else {
-          //데이터베이스에 있는 비밀번호를 복호화 시켜서 요청 값으로 가져온 pass.user_pw와 같은지 확인
-            const same = bcrypt.compareSync(pass.user_pw, results[0].user_passwd);
-            if (!same) { // 비밀번호 틀릴 시
-                return res.status(200).json({ message: 'pw_ck' });
-            }
+  db.query(sql.pass_info, [pass.user_no], function (error, results, fields) {
+      if (results.length <= 0) {
+          if (error) {
+              return res.status.json({ message: '에러'});
+          }
+      } else {
+          const same = bcrypt.compareSync(pass.user_pw, results[0].user_passwd);
+          if (!same) { // 비밀번호 틀릴 시
+              return res.status(200).json({ message: 'pw_ck' });
+          }
 
-            const encryptedNewPW = bcrypt.hashSync(pass.user_npw, 10);
+          const encryptedNewPW = bcrypt.hashSync(pass.user_npw, 10);
 
-            db.query(sql.pass_update, [encryptedNewPW, pass.user_no], function (error, results, fields) {
-                if(error) {
-                  console.log(results);
-                    return res.status(500).json({ message: '에러' });
-                }
+          db.query(sql.pass_update, [encryptedNewPW, pass.user_no], function (error, results, fields) {
+              if(error) {
                 console.log(results);
-                return res.status(200).json({ message: 'success'});
-            });
-        }
-    });
+                  return res.status(500).json({ message: '에러' });
+              }
+              console.log(results);
+              return res.status(200).json({ message: 'success'});
+          });
+      }
+  });
 });
 
 

@@ -42,7 +42,7 @@ WHERE user_no = ?`,
   where user_no = ?`,
     //계정 삭제
   user_delete: `delete from trip_user where user_no = ?`,
-  soft_Dele: `update trip_user set deleted_at = now() where user_no = ?`,
+  soft_Dele : `update trip_user set deleted_at = now() where user_no=?`,
   //pass
   pass_info: `select user_passwd from trip_user where user_no = ?`,
   pass_update: 'UPDATE trip_user SET user_passwd = ? WHERE user_no = ?', 
@@ -186,7 +186,7 @@ admin_search: `SELECT * FROM trip_user`,
     show_board: `select * from trip_board join trip_user 
           where trip_board.user_no=trip_user.user_no and trip_board.user_no ORDER BY board_no DESC LIMIT ? OFFSET ?;`,
     board_cnt: `SELECT COUNT(*) FROM trip_board`,
-    board_search: `SELECT * FROM trip_board WHERE board_tit LIKE ? ORDER BY board_no DESC LIMIT ? OFFSET ?`,
+    board_search: `SELECT * FROM trip_board WHERE board_tit LIKE ? ORDER BY board_no DESC`,
     board_admin: `SELECT * FROM trip_board JOIN trip_user WHERE trip_board.user_no = trip_user.user_no`, //1
     board_Detail: `SELECT * FROM trip_board JOIN trip_user WHERE trip_board.user_no=trip_user.user_no AND board_no = ?; `, //게시글 상세
     board_delete: `DELETE FROM trip_board WHERE board_no = ?`,

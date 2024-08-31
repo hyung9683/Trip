@@ -1,5 +1,15 @@
 <template>
     <div class="container">
+        <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+        crossorigin="anonymous"
+      />
+      <link
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        rel="stylesheet"
+      />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <div class="icon-bar menu">
@@ -8,22 +18,22 @@
                 <p>내 정보</p>
             </router-link>
 
-            <router-link class="m" to="/mypage/likepage" active-class="active-link">
+            <router-link class="m" to="/mypage/likepage">
                 <i class="bi bi-hand-thumbs-up"></i>
                 <p >좋아요 목록</p>
             </router-link>
 
-            <router-link class="m" to="/mypage/contentpage" active-class="active-link">
+            <router-link class="m" to="/mypage/contentpage">
                 <i class="bi bi-list-task"></i>
                 <p>글 목록</p>
             </router-link>
 
-            <router-link class="m" to="/mypage/reviewpage" active-class="active-link">
+            <router-link class="m" to="/mypage/reviewpage">
                 <i class="bi bi-chat-right-text"></i>
                 <p>리뷰 목록</p>
             </router-link>
 
-            <router-link class="m" to="/mypage/qnapage" active-class="active-link">
+            <router-link class="m" to="/mypage/qnapage">
                 <i class="bi bi-question-square"></i>
                 <p>문의내역</p>
             </router-link>
@@ -60,39 +70,6 @@ export default {
     top: 150px;
 }
 
-/* .menu .m, .menu p {
-    color: #DDC9BC;
-    text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 60px;
-    transition: background-color 0.3s ease;
-}
-
-.menu .m i {
-    margin-bottom: 5px;
-}
-
-.menu p {
-    margin: 0;
-    font-size: 14px;
-    color: #000000;
-}
-
-.menu .m:hover {
-    background-color: #8E7C68;
-}
-
-.active-link {
-
-    background-color: #ffffff;
-    color: #000000;
-} */
-
-
-
 .menu .m , .icon-bar p{
     color: #DDC9BC;
 }
@@ -101,7 +78,7 @@ export default {
     display: none;
 }
 
-.menu .m {
+.menu a {
     display: block;
     text-align: center;
     height: 60px;
@@ -124,11 +101,12 @@ export default {
     background-color: #8E7C68;
 }
 
+.menu .m {
+    /* box-shadow: 0 1px 10px #000000; */
+}
 
-.menu .m:focus {
-
+.active {
     background-color: #ffffff;
-    box-shadow: 0 0.4px 4px rgb(209, 116, 95)C;
 }
 
 .bi {

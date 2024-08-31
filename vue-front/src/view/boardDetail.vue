@@ -16,7 +16,7 @@
               />
               <img
                 v-else
-                :src="require(`../../../node-back/uploads/uploadBoard/${board.board_img}`)"
+                :src="require(`../../../node-back/uploads/${board.board_img}`)"
                 alt="..."
                 width="20%"
               />

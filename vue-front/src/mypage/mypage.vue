@@ -79,8 +79,11 @@ methods: {
             cancelButtonText: '취소',
             reversButtons: true 
         }).then(result => {
-            if (result.value) {
+            if (result.value && this.loginuser.user_login_ty === 0) {
                 this.userDele();
+            }
+            else if(result.value && this.loginuser.user_login_ty === 1) {
+                this.deleteKakaoAccount();
             }
         });
     },
@@ -135,37 +138,9 @@ methods: {
         }
     },
 
-//     async userDele() {
-//         try {
-//     const response = await axios.delete(`http://localhost:3000/mypage/delete/${this.user.user_no}`);
-//     if (response.status === 200) {
-//         this.$swal({
-//           position:'top',
-//           icon: 'success',
-//           title: '회원탈퇴 성공',
-//           showConfirmButton: false,
-//           timer: 1500
-//         });
-//     }
-//     this.$store.commit("user", { user_id: '', user_no: '' });
-//     this.$nextTick(() => {
-
-//       this.$router.push({ path: '/' });
-    
-//     });
-
-//   } catch (err) {
-//     console.error('err');
-//     this.$swal({
-//       icon: 'error',
-//       title: '삭제 실패',
-//       text: '계정 삭제에 실패했습니다.'
-//     });
-//   }
-//     },
     async userDele() {
         try {
-    const response = await axios.post(`http://localhost:3000/mypage/delete/${this.user.user_no}`);
+    const response = await axios.delete(`http://localhost:3000/mypage/delete/${this.user.user_no}`);
     if (response.status === 200) {
         this.$swal({
           position:'top',
@@ -191,57 +166,57 @@ methods: {
     });
   }
     },
-//    async deleteKakaoAccount() {
+   async deleteKakaoAccount() {
 
-//         try{ 
-//             const response = await axios.delete('http://localhost:3000/mypage/kakaoDelete', {
+        try{ 
+            const response = await axios.delete('http://localhost:3000/mypage/kakaoDelete', {
 
-//                 data: {
-//                     user_id: this.user.user_id,
-//                     user_no: this.user.user_no
-//                 }
-//             });
-//             if (response.data.message === '성공적으로 삭제되었습니다.') {
-//                 return response.data;
-//             }
-//         } catch (err) {
-//             console.error(err);
-//             this.$swal({
-//                 icon: 'error',
-//                 title: '삭제 실패',
-//                 text: '계정 삭제에 실패했습니다.'
-//             });
-//         }
-//        const user_id = this.$store.state.user.user_id;
-//         const user_no = this.$store.state.user.user_no;
-//         axios({
-//             url: "http://localhost:3000/mypage/kakaoDelete",
-//             method: "DELETE",
-//             data: {
-//                 user_id: user_id,
-//                 user_no: user_no
-//             }
-//         }).then(res => {
-//             if (res.data.message === '성공적으로 삭제되었습니다.') {
-//                 this.$swal({
-//                     position: 'top',
-//                     icon: 'success',
-//                     title: '카카오 계정 삭제 완료!',
-//                     showConfirmButton: false,
-//                     timer: 1000
-//                 }).then(() => {
-//                     this.$store.commit("user", { user_id: '', user_no: '' });
-//                     this.$nextTick(() => {
+                data: {
+                    user_id: this.user.user_id,
+                    user_no: this.user.user_no
+                }
+            });
+            if (response.data.message === '성공적으로 삭제되었습니다.') {
+                return response.data;
+            }
+        } catch (err) {
+            console.error(err);
+            this.$swal({
+                icon: 'error',
+                title: '삭제 실패',
+                text: '계정 삭제에 실패했습니다.'
+            });
+        }
+       const user_id = this.$store.state.user.user_id;
+        const user_no = this.$store.state.user.user_no;
+        axios({
+            url: "http://localhost:3000/mypage/kakaoDelete",
+            method: "DELETE",
+            data: {
+                user_id: user_id,
+                user_no: user_no
+            }
+        }).then(res => {
+            if (res.data.message === '성공적으로 삭제되었습니다.') {
+                this.$swal({
+                    position: 'top',
+                    icon: 'success',
+                    title: '카카오 계정 삭제 완료!',
+                    showConfirmButton: false,
+                    timer: 1000
+                }).then(() => {
+                    this.$store.commit("user", { user_id: '', user_no: '' });
+                    this.$nextTick(() => {
 
-//                      this.$router.push({ path: '/' });
+                     this.$router.push({ path: '/' });
 
-//                      });
-//                 });
-//             }
-//         }).catch(err => {
-//             console.log(err);
-//         });
-//     }
+                     });
+                });
+            }
+        }).catch(err => {
+            console.log(err);
+        });
+    }
 },
 }
 </script>

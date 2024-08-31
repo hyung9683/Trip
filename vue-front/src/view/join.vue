@@ -11,7 +11,6 @@
                 <input type="tel" @input="validatePhoneNumber" v-model="user_num" placeholder="전화번호">
 
                 <br />
-                <!-- 우편번호 불러오면 입력된 게 들어감 -->
                 <button class="btn" type="button" v-on:click="zipload">우편번호 찾기</button>
                 <span v-show="zipinput" class="addinput">{{ user_zipcode }}</span>
                 <span v-show="zipinput" class="addinput">{{ user_adr1 }}</span>

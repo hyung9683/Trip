@@ -21,7 +21,7 @@ export default {
         labels: [],
         datasets: [
           {
-            label: '좋아요 수',
+            label: '여행지 좋아요 수',
             data: [],
             backgroundColor: [],
             borderColor: [],
@@ -33,7 +33,7 @@ export default {
         labels: [],
         datasets: [
           {
-            label: '좋아요 수',
+            label: '축제 좋아요 수',
             data: [],
             backgroundColor: [],
             borderColor: [],
@@ -45,7 +45,7 @@ export default {
         labels: [],
         datasets: [
           {
-            label: '조회수',
+            label: '자유게시판 조회수',
             data: [],
             backgroundColor: [],
             borderColor: [],

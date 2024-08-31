@@ -104,7 +104,6 @@ export default {
         .post("http://localhost:3000/bd/boardcnt")
         .then((res) => {
           this.cnt = res.data;
-          console.log(this.cnt);
         })
         .catch((err) => {
           alert("게시글 수를 가져오는 중 오류가 발생했습니다.");

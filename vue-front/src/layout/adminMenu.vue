@@ -25,7 +25,7 @@
             </router-link>
             <router-link to="/admin/test">
                 <i class="fa fa-question"></i>
-                <p>테스트 용</p>
+                <p>분석차트</p>
             </router-link>     
         </div>
     </div>

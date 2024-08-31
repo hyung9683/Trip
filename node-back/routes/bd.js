@@ -53,7 +53,6 @@ router.post('/boardcontent', (req, res) => {
   });
 })
 
-//댓글 작성
 router.post('/comment_write', function (req, res) {
   const { board_no, user_no, comment_content, parent_comment_id } = req.body;
   
@@ -72,7 +71,6 @@ router.post('/comment_write', function (req, res) {
   });
 });
 
-//댓글 리스트
 router.post('/comment_list', (req, res) => {
   const board_no = req.body.board_no;
 
@@ -133,6 +131,7 @@ router.post('/boardcnt', (req, res) => {
     return res.status(200).json(results[0]['COUNT(*)']);
   });
 });
+
 // 이미지 업로더 
 const upload = multer({
   storage: multer.diskStorage({
@@ -173,13 +172,12 @@ router.post('/incrementBoardView', (req, res) => {
 //검색
 router.post('/contentsearch', function (request, response, next) {
   const searchboard = '%' + request.body.searchboard + '%';
-  const page = request.body;
   // const sortCase = request.body.sortCase;
 
   // const order = sortCaseReplace(sortCase);
   
 
-  db.query(sql.board_search, [searchboard, page.pageSize, page.page], function (error, results, fields) {
+  db.query(sql.board_search, [searchboard], function (error, results, fields) {
       if (error) {
           console.error(error);
           return response.status(500).json({ error: 'search_error' });

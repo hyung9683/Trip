@@ -34,7 +34,6 @@ router.post('/kakaoJoinProcess', function (request, response) {
 
 router.post('/kakaoLoginProcess', function (request, response) {
     const kakao = request.body;
-    console.log(kakao);
 
     // 데이터 없을 시 회원가입도 진행
     db.query(sql.kakao_check, [kakao.user_id], function (error, results, fields) {
@@ -150,7 +149,7 @@ router.post('/login_process', function (request, response) {
     const loginUser = request.body;
 
     db.query(sql.id_check, [loginUser.user_id], function (error, results, fields) {
-        if (results.length <= 0 || results[0].deleted_at) {
+        if (results.length <= 0) {
             return response.status(200).json({
                 message: 'undefined_id'
             })

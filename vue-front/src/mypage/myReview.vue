@@ -1,17 +1,8 @@
 <template>
   <main class="mt-3">
     <div class="container">
-      <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
-        crossorigin="anonymous"
-      />
-      <link
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-        rel="stylesheet"
-      />
       <h3>나의 리뷰</h3>
+      <!-- 리뷰 목록 테이블 -->
       <table v-if="reviewList.length > 0" class="tbList">
         <colgroup>
           <col width="10%" />
@@ -36,6 +27,7 @@
               <img style="width:100%" :src="getImageUrl(review)" alt="이미지" />
             </td>
             <td>
+              <!-- 별점 표시 -->
               <div class="stars">
                 <span v-for="n in 5" :key="n" class="star">
                   <i :class="['fas', 'fa-star', { 'text-warning': n <= review.review_goat, 'text-secondary': n > review.review_goat }]"></i>
@@ -43,11 +35,16 @@
               </div>
             </td>
             <td class="review-text" @click="goToDetail(review)">{{ review.review_content }}</td>
-            <td><button class="del_btn" @click="confirmDeleteContent(review.review_no)">삭제</button></td>
+            <td>
+              <!-- 삭제 버튼 -->
+              <button class="del_btn" @click="confirmDeleteContent(review.review_no)">삭제</button>
+            </td>
           </tr>
         </tbody>
       </table>
+      <!-- 리뷰가 없는 경우의 메시지 -->
       <p v-else>등록된 리뷰가 없습니다.</p>
+      <!-- 페이지 네비게이션 버튼 -->
       <div class="btn-cover">
         <button @click="movetopreviouspage" class="page-btn" :disabled="page === 1">이전</button>
         <span class="page-count">{{ page }}/{{ totalpage }} 페이지</span>
@@ -241,19 +238,18 @@ export default {
   padding: 0 15px 0 20px;
   /* 위 오 아래 왼 간격 조절 */
 }
-.del_btn{
-    height: 23px;
-  width: 50px;
+
+.del_btn {
+  height: 30px; /* 높이 설정 */
+  width: 60px; /* 너비 설정 */
   border: none;
   background-color: #aeaeae;
   font-family: 'GmarketSansMedium';
   font-size: 14px;
- 
-  
 }
+
 button.del_btn:hover {
   cursor: pointer;
-  background-color:rgb(161, 161, 161);
-
+  background-color: rgb(161, 161, 161);
 }
 </style>
